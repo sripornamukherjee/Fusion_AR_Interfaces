@@ -8,10 +8,8 @@ import java.math.BigDecimal;
  * Created by Sobhan Babu on 26-04-2016.
  */
 public class Invoice {
-	// Git develop branch
     public static String invoicefile;
 
-    // Git master
     //input header
     private String headerSerialNumber;
     //private String invoiceHeader;
