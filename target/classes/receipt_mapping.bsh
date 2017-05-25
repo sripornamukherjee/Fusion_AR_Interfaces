@@ -1,0 +1,15 @@
+public void mapReceiptValues(Map map){
+
+ 	String collectionMode = map.get("collectionPayMode");
+
+    // map.put("status","Paid");
+
+     if (collectionMode.equals("E-Payment")){
+         map.put("methodName","ISCA_DBS_cheque(CPE)_070");
+     }
+
+     map.put("businessUnitName","ISCA Business Unit");
+     //map.put("customerAccntNumber","1001");
+     map.put("currencyCode","SGD");
+
+ }

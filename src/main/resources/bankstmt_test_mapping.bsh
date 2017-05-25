@@ -1,0 +1,6 @@
+public void setSubmitJobParams(List paramList){
+    paramList.add("6");
+    paramList.add("N");
+    paramList.add("N");
+    paramList.add("null");
+}

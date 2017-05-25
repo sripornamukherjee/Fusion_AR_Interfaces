@@ -1,0 +1,8 @@
+public void mapCreditNoteValues(Map map){
+	print("mapping credit note values");
+
+	//String collectionMode = map.get("comme");
+
+    map.put("comments","Rejected");
+
+}

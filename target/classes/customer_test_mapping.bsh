@@ -1,0 +1,634 @@
+public void mapCustomerValues(Map map){
+    print("mapping customer values");
+
+    String batchIdentifier = map.get("batchIdentifier");
+    String customerId = map.get("customerId");
+    String customerType = map.get("customerTypeInput");
+    String customerStatus = map.get("customerStatusInput");
+    String country = map.get("country");
+    String emailAddress = map.get("emailAddress");
+    String contactPersonName = map.get("contactPersonName");
+    String customerName = map.get("customerName");
+
+
+    /*if (batchIdentifier == null) {
+        //map.put("batchIdentifier","300000001867988");
+        map.put("batchIdentifier","300000003069844");
+    }*/
+
+    if (identifyingAddr == null) {
+        map.put("identifyingAddr","Y");
+    }
+
+    if ("Person Account".equalsIgnoreCase(customerType)){
+        map.put("customerType","PERSON");
+    }
+
+    if ("Business Account".equalsIgnoreCase(customerType)){
+        map.put("customerType","ORGANIZATION");
+    }
+
+    if ("Active".equalsIgnoreCase(customerStatus)){
+        map.put("customerStatus","A");
+    }
+
+    if ("Inactive".equalsIgnoreCase(customerStatus)){
+        map.put("customerStatus","I");
+    }
+
+    map.put("insertUpdateIndicator","I");
+    //map.put("orgId","300000001919104");
+    map.put("orgId","300000002320961");
+    map.put("customerId1", customerId + "-1");
+    map.put("subRelPrtyOrigSystemRef", customerId + "-1");
+    map.put("relSrcSystemRef", customerId + "-1");
+    map.put("accntSiteSrcSysRef", customerId + "-1");
+    map.put("contctRoleOrigSysRef", customerId + "-1");
+    map.put("customerIdPhone", customerId + "-1-1phone");
+    map.put("customerIdEmail", customerId + "-1-1email");
+    map.put("customerIdBillToResponsibiltiy", customerId + "-1-1");
+    map.put("customerIdStmtResponsibiltiy", customerId + "-1-2");
+
+    if("".equalsIgnoreCase(country)){
+        map.put("county", "Singapore");
+    }else {
+        map.put("county", country);
+    }
+
+    if("".equalsIgnoreCase(emailAddress)){
+        map.put("mappedEmailAddr", "abc@gmail.com");
+    }else {
+        map.put("mappedEmailAddr", emailAddress);
+    }
+
+    if("".equalsIgnoreCase(contactPersonName)){
+        map.put("contactPersonName", customerName);
+    }
+
+    if("Singapore".equalsIgnoreCase(country)){
+        map.put("county1","SG");
+    }else if("Andorra".equalsIgnoreCase(country)){
+        map.put("county1","AD");
+    }else if("UnitedArabEmirates".equalsIgnoreCase(country)){
+        map.put("county1","AE");
+    }else if("Afghanistan".equalsIgnoreCase(country)){
+        map.put("county1","AF");
+    }else if("AntiguaandBarbuda".equalsIgnoreCase(country)){
+        map.put("county1","AG");
+    }else if("Anguilla".equalsIgnoreCase(country)){
+        map.put("county1","AI");
+    }else if("Albania".equalsIgnoreCase(country)){
+        map.put("county1","AL");
+    }else if("Armenia".equalsIgnoreCase(country)){
+        map.put("county1","AM");
+    }else if("Australia".equalsIgnoreCase(country)){
+         map.put("county1","AU");
+    }else if("Malaysia".equalsIgnoreCase(country)){
+         map.put("county1","MY");
+    }else if("China".equalsIgnoreCase(country)){
+          map.put("county1","CN");
+    }else if("India".equalsIgnoreCase(country)){
+           map.put("county1","IN");
+    }else if("Philippines".equalsIgnoreCase(country)){
+        map.put("county1","PH");
+    }else if("Argentina".equalsIgnoreCase(country)){
+        map.put("county1","AR");
+    }else if("Philippines".equalsIgnoreCase(country)){
+        map.put("county1","PH");
+    }else if("Andorra".equalsIgnoreCase(country)){
+        map.put("county1","AD");
+    }else if("UnitedArabEmirates".equalsIgnoreCase(country)){
+        map.put("county1","AE");
+    }else if("Afghanistan".equalsIgnoreCase(country)){
+        map.put("county1","AF");
+    }else if("AntiguaandBarbuda".equalsIgnoreCase(country)){
+        map.put("county1","AG");
+    }else if("Anguilla".equalsIgnoreCase(country)){
+        map.put("county1","AI");
+    }else if("Albania".equalsIgnoreCase(country)){
+        map.put("county1","AL");
+    }else if("Armenia".equalsIgnoreCase(country)){
+        map.put("county1","AM");
+    }else if("NetherlandsAntilles".equalsIgnoreCase(country)){
+        map.put("county1","AN");
+    }else if("Angola".equalsIgnoreCase(country)){
+        map.put("county1","AO");
+    }else if("Antarctica".equalsIgnoreCase(country)){
+        map.put("county1","AQ");
+    }else if("OldstyleArpanet".equalsIgnoreCase(country)){
+        map.put("county1","ARPA");
+    }else if("AmericanSamoa".equalsIgnoreCase(country)){
+        map.put("county1","AS");
+    }else if("Austria".equalsIgnoreCase(country)){
+        map.put("county1","AT");
+    }else if("Australia".equalsIgnoreCase(country)){
+        map.put("county1","AU");
+    }else if("Aruba".equalsIgnoreCase(country)){
+        map.put("county1","AW");
+    }else if("Azerbaidjan".equalsIgnoreCase(country)){
+        map.put("county1","AZ");
+    }else if("Bosnia-Herzegovina".equalsIgnoreCase(country)){
+        map.put("county1","BA");
+    }else if("Barbados".equalsIgnoreCase(country)){
+        map.put("county1","BB");
+    }else if("Bangladesh".equalsIgnoreCase(country)){
+        map.put("county1","BD");
+    }else if("Belgium".equalsIgnoreCase(country)){
+        map.put("county1","BE");
+    }else if("BurkinaFaso".equalsIgnoreCase(country)){
+        map.put("county1","BF");
+    }else if("Bulgaria".equalsIgnoreCase(country)){
+        map.put("county1","BG");
+    }else if("Bahrain".equalsIgnoreCase(country)){
+        map.put("county1","BH");
+    }else if("Burundi".equalsIgnoreCase(country)){
+        map.put("county1","BI");
+    }else if("Benin".equalsIgnoreCase(country)){
+        map.put("county1","BJ");
+    }else if("Bermuda".equalsIgnoreCase(country)){
+        map.put("county1","BM");
+    }else if("BruneiDarussalam".equalsIgnoreCase(country)){
+        map.put("county1","BN");
+    }else if("Bolivia".equalsIgnoreCase(country)){
+        map.put("county1","BO");
+    }else if("Brazil".equalsIgnoreCase(country)){
+        map.put("county1","BR");
+    }else if("Bahamas".equalsIgnoreCase(country)){
+        map.put("county1","BS");
+    }else if("Bhutan".equalsIgnoreCase(country)){
+        map.put("county1","BT");
+    }else if("BouvetIsland".equalsIgnoreCase(country)){
+        map.put("county1","BV");
+    }else if("Botswana".equalsIgnoreCase(country)){
+        map.put("county1","BW");
+    }else if("Belarus".equalsIgnoreCase(country)){
+        map.put("county1","BY");
+    }else if("Belize".equalsIgnoreCase(country)){
+        map.put("county1","BZ");
+    }else if("Canada".equalsIgnoreCase(country)){
+        map.put("county1","CA");
+    }else if("Cocos(Keeling)Islands".equalsIgnoreCase(country)){
+        map.put("county1","CC");
+    }else if("CentralAfricanRepublic".equalsIgnoreCase(country)){
+        map.put("county1","CF");
+    }else if("Congo".equalsIgnoreCase(country)){
+        map.put("county1","CG");
+    }else if("Switzerland".equalsIgnoreCase(country)){
+        map.put("county1","CH");
+    }else if("IvoryCoast(CoteD'Ivoire)".equalsIgnoreCase(country)){
+        map.put("county1","CI");
+    }else if("CookIslands".equalsIgnoreCase(country)){
+        map.put("county1","CK");
+    }else if("Chile".equalsIgnoreCase(country)){
+        map.put("county1","CL");
+    }else if("Cameroon".equalsIgnoreCase(country)){
+        map.put("county1","CM");
+    }else if("China".equalsIgnoreCase(country)){
+        map.put("county1","CN");
+    }else if("Colombia".equalsIgnoreCase(country)){
+        map.put("county1","CO");
+    }else if("Commercial".equalsIgnoreCase(country)){
+        map.put("county1","COM");
+    }else if("CostaRica".equalsIgnoreCase(country)){
+        map.put("county1","CR");
+    }else if("FormerCzechoslovakia".equalsIgnoreCase(country)){
+        map.put("county1","CS");
+    }else if("Cuba".equalsIgnoreCase(country)){
+        map.put("county1","CU");
+    }else if("CapeVerde".equalsIgnoreCase(country)){
+        map.put("county1","CV");
+    }else if("ChristmasIsland".equalsIgnoreCase(country)){
+        map.put("county1","CX");
+    }else if("Cyprus".equalsIgnoreCase(country)){
+        map.put("county1","CY");
+    }else if("CzechRepublic".equalsIgnoreCase(country)){
+        map.put("county1","CZ");
+    }else if("Germany".equalsIgnoreCase(country)){
+        map.put("county1","DE");
+    }else if("Djibouti".equalsIgnoreCase(country)){
+        map.put("county1","DJ");
+    }else if("Denmark".equalsIgnoreCase(country)){
+        map.put("county1","DK");
+    }else if("Dominica".equalsIgnoreCase(country)){
+        map.put("county1","DM");
+    }else if("DominicanRepublic".equalsIgnoreCase(country)){
+        map.put("county1","DO");
+    }else if("Algeria".equalsIgnoreCase(country)){
+        map.put("county1","DZ");
+    }else if("Ecuador".equalsIgnoreCase(country)){
+        map.put("county1","EC");
+    }else if("USAEducational".equalsIgnoreCase(country)){
+        map.put("county1","EDU");
+    }else if("Estonia".equalsIgnoreCase(country)){
+        map.put("county1","EE");
+    }else if("Egypt".equalsIgnoreCase(country)){
+        map.put("county1","EG");
+    }else if("WesternSahara".equalsIgnoreCase(country)){
+        map.put("county1","EH");
+    }else if("Eritrea".equalsIgnoreCase(country)){
+        map.put("county1","ER");
+    }else if("Spain".equalsIgnoreCase(country)){
+        map.put("county1","ES");
+    }else if("Ethiopia".equalsIgnoreCase(country)){
+        map.put("county1","ET");
+    }else if("Finland".equalsIgnoreCase(country)){
+        map.put("county1","FI");
+    }else if("Fiji".equalsIgnoreCase(country)){
+        map.put("county1","FJ");
+    }else if("FalklandIslands".equalsIgnoreCase(country)){
+        map.put("county1","FK");
+    }else if("Micronesia".equalsIgnoreCase(country)){
+        map.put("county1","FM");
+    }else if("FaroeIslands".equalsIgnoreCase(country)){
+        map.put("county1","FO");
+    }else if("France".equalsIgnoreCase(country)){
+        map.put("county1","FR");
+    }else if("France(EuropeanTerritory)".equalsIgnoreCase(country)){
+        map.put("county1","FX");
+    }else if("Gabon".equalsIgnoreCase(country)){
+        map.put("county1","GA");
+    }else if("GreatBritain".equalsIgnoreCase(country)){
+        map.put("county1","GB");
+    }else if("Grenada".equalsIgnoreCase(country)){
+        map.put("county1","GD");
+    }else if("Georgia".equalsIgnoreCase(country)){
+        map.put("county1","GE");
+    }else if("FrenchGuyana".equalsIgnoreCase(country)){
+        map.put("county1","GF");
+    }else if("Ghana".equalsIgnoreCase(country)){
+        map.put("county1","GH");
+    }else if("Gibraltar".equalsIgnoreCase(country)){
+        map.put("county1","GI");
+    }else if("Greenland".equalsIgnoreCase(country)){
+        map.put("county1","GL");
+    }else if("Gambia".equalsIgnoreCase(country)){
+        map.put("county1","GM");
+    }else if("Guinea".equalsIgnoreCase(country)){
+        map.put("county1","GN");
+    }else if("USAGovernment".equalsIgnoreCase(country)){
+        map.put("county1","GOV");
+    }else if("Guadeloupe(French)".equalsIgnoreCase(country)){
+        map.put("county1","GP");
+    }else if("EquatorialGuinea".equalsIgnoreCase(country)){
+        map.put("county1","GQ");
+    }else if("Greece".equalsIgnoreCase(country)){
+        map.put("county1","GR");
+    }else if("S.Georgia&S.SandwichIsls.".equalsIgnoreCase(country)){
+        map.put("county1","GS");
+    }else if("Guatemala".equalsIgnoreCase(country)){
+        map.put("county1","GT");
+    }else if("Guam(USA)".equalsIgnoreCase(country)){
+        map.put("county1","GU");
+    }else if("GuineaBissau".equalsIgnoreCase(country)){
+        map.put("county1","GW");
+    }else if("Guyana".equalsIgnoreCase(country)){
+        map.put("county1","GY");
+    }else if("HongKong".equalsIgnoreCase(country)){
+        map.put("county1","HK");
+    }else if("HeardandMcDonaldIslands".equalsIgnoreCase(country)){
+        map.put("county1","HM");
+    }else if("Honduras".equalsIgnoreCase(country)){
+        map.put("county1","HN");
+    }else if("Croatia".equalsIgnoreCase(country)){
+        map.put("county1","HR");
+    }else if("Haiti".equalsIgnoreCase(country)){
+        map.put("county1","HT");
+    }else if("Hungary".equalsIgnoreCase(country)){
+        map.put("county1","HU");
+    }else if("Indonesia".equalsIgnoreCase(country)){
+        map.put("county1","ID");
+    }else if("Ireland".equalsIgnoreCase(country)){
+        map.put("county1","IE");
+    }else if("Israel".equalsIgnoreCase(country)){
+        map.put("county1","IL");
+    }else if("India".equalsIgnoreCase(country)){
+        map.put("county1","IN");
+    }else if("International".equalsIgnoreCase(country)){
+        map.put("county1","INT");
+    }else if("BritishIndianOceanTerritory".equalsIgnoreCase(country)){
+        map.put("county1","IO");
+    }else if("Iraq".equalsIgnoreCase(country)){
+        map.put("county1","IQ");
+    }else if("Iran".equalsIgnoreCase(country)){
+        map.put("county1","IR");
+    }else if("Iceland".equalsIgnoreCase(country)){
+        map.put("county1","IS");
+    }else if("Italy".equalsIgnoreCase(country)){
+        map.put("county1","IT");
+    }else if("Jamaica".equalsIgnoreCase(country)){
+        map.put("county1","JM");
+    }else if("Jordan".equalsIgnoreCase(country)){
+        map.put("county1","JO");
+    }else if("Japan".equalsIgnoreCase(country)){
+        map.put("county1","JP");
+    }else if("Kenya".equalsIgnoreCase(country)){
+        map.put("county1","KE");
+    }else if("Kyrgyzstan".equalsIgnoreCase(country)){
+        map.put("county1","KG");
+    }else if("Cambodia".equalsIgnoreCase(country)){
+        map.put("county1","KH");
+    }else if("Kiribati".equalsIgnoreCase(country)){
+        map.put("county1","KI");
+    }else if("Comoros".equalsIgnoreCase(country)){
+        map.put("county1","KM");
+    }else if("SaintKitts&NevisAnguilla".equalsIgnoreCase(country)){
+        map.put("county1","KN");
+    }else if("NorthKorea".equalsIgnoreCase(country)){
+        map.put("county1","KP");
+    }else if("SouthKorea".equalsIgnoreCase(country)){
+        map.put("county1","KR");
+    }else if("Kuwait".equalsIgnoreCase(country)){
+        map.put("county1","KW");
+    }else if("CaymanIslands".equalsIgnoreCase(country)){
+        map.put("county1","KY");
+    }else if("Kazakhstan".equalsIgnoreCase(country)){
+        map.put("county1","KZ");
+    }else if("Laos".equalsIgnoreCase(country)){
+        map.put("county1","LA");
+    }else if("Lebanon".equalsIgnoreCase(country)){
+        map.put("county1","LB");
+    }else if("SaintLucia".equalsIgnoreCase(country)){
+        map.put("county1","LC");
+    }else if("Liechtenstein".equalsIgnoreCase(country)){
+        map.put("county1","LI");
+    }else if("SriLanka".equalsIgnoreCase(country)){
+        map.put("county1","LK");
+    }else if("Liberia".equalsIgnoreCase(country)){
+        map.put("county1","LR");
+    }else if("Lesotho".equalsIgnoreCase(country)){
+        map.put("county1","LS");
+    }else if("Lithuania".equalsIgnoreCase(country)){
+        map.put("county1","LT");
+    }else if("Luxembourg".equalsIgnoreCase(country)){
+        map.put("county1","LU");
+    }else if("Latvia".equalsIgnoreCase(country)){
+        map.put("county1","LV");
+    }else if("Libya".equalsIgnoreCase(country)){
+        map.put("county1","LY");
+    }else if("Morocco".equalsIgnoreCase(country)){
+        map.put("county1","MA");
+    }else if("Monaco".equalsIgnoreCase(country)){
+        map.put("county1","MC");
+    }else if("Moldavia".equalsIgnoreCase(country)){
+        map.put("county1","MD");
+    }else if("Madagascar".equalsIgnoreCase(country)){
+        map.put("county1","MG");
+    }else if("MarshallIslands".equalsIgnoreCase(country)){
+        map.put("county1","MH");
+    }else if("USAMilitary".equalsIgnoreCase(country)){
+        map.put("county1","MIL");
+    }else if("Macedonia".equalsIgnoreCase(country)){
+        map.put("county1","MK");
+    }else if("Mali".equalsIgnoreCase(country)){
+        map.put("county1","ML");
+    }else if("Myanmar".equalsIgnoreCase(country)){
+        map.put("county1","MM");
+    }else if("Mongolia".equalsIgnoreCase(country)){
+        map.put("county1","MN");
+    }else if("Macau".equalsIgnoreCase(country)){
+        map.put("county1","MO");
+    }else if("NorthernMarianaIslands".equalsIgnoreCase(country)){
+        map.put("county1","MP");
+    }else if("Martinique(French)".equalsIgnoreCase(country)){
+        map.put("county1","MQ");
+    }else if("Mauritania".equalsIgnoreCase(country)){
+        map.put("county1","MR");
+    }else if("Montserrat".equalsIgnoreCase(country)){
+        map.put("county1","MS");
+    }else if("Malta".equalsIgnoreCase(country)){
+        map.put("county1","MT");
+    }else if("Mauritius".equalsIgnoreCase(country)){
+        map.put("county1","MU");
+    }else if("Maldives".equalsIgnoreCase(country)){
+        map.put("county1","MV");
+    }else if("Malawi".equalsIgnoreCase(country)){
+        map.put("county1","MW");
+    }else if("Mexico".equalsIgnoreCase(country)){
+        map.put("county1","MX");
+    }else if("Malaysia".equalsIgnoreCase(country)){
+        map.put("county1","MY");
+    }else if("Mozambique".equalsIgnoreCase(country)){
+        map.put("county1","MZ");
+    }else if("Namibia".equalsIgnoreCase(country)){
+        map.put("county1","NA");
+    }else if("NewCaledonia(French)".equalsIgnoreCase(country)){
+        map.put("county1","NC");
+    }else if("Niger".equalsIgnoreCase(country)){
+        map.put("county1","NE");
+    }else if("Network".equalsIgnoreCase(country)){
+        map.put("county1","NET");
+    }else if("NorfolkIsland".equalsIgnoreCase(country)){
+        map.put("county1","NF");
+    }else if("Nigeria".equalsIgnoreCase(country)){
+        map.put("county1","NG");
+    }else if("Nicaragua".equalsIgnoreCase(country)){
+        map.put("county1","NI");
+    }else if("Netherlands".equalsIgnoreCase(country)){
+        map.put("county1","NL");
+    }else if("Norway".equalsIgnoreCase(country)){
+        map.put("county1","NO");
+    }else if("Nepal".equalsIgnoreCase(country)){
+        map.put("county1","NP");
+    }else if("Nauru".equalsIgnoreCase(country)){
+        map.put("county1","NR");
+    }else if("NeutralZone".equalsIgnoreCase(country)){
+        map.put("county1","NT");
+    }else if("Niue".equalsIgnoreCase(country)){
+        map.put("county1","NU");
+    }else if("NewZealand".equalsIgnoreCase(country)){
+        map.put("county1","NZ");
+    }else if("Oman".equalsIgnoreCase(country)){
+        map.put("county1","OM");
+    }else if("Non-ProfitMakingOrganisations(sic)".equalsIgnoreCase(country)){
+        map.put("county1","ORG");
+    }else if("Panama".equalsIgnoreCase(country)){
+        map.put("county1","PA");
+    }else if("Peru".equalsIgnoreCase(country)){
+        map.put("county1","PE");
+    }else if("Polynesia(French)".equalsIgnoreCase(country)){
+        map.put("county1","PF");
+    }else if("PapuaNewGuinea".equalsIgnoreCase(country)){
+        map.put("county1","PG");
+    }else if("Philippines".equalsIgnoreCase(country)){
+        map.put("county1","PH");
+    }else if("Pakistan".equalsIgnoreCase(country)){
+        map.put("county1","PK");
+    }else if("Poland".equalsIgnoreCase(country)){
+        map.put("county1","PL");
+    }else if("SaintPierreandMiquelon".equalsIgnoreCase(country)){
+        map.put("county1","PM");
+    }else if("PitcairnIsland".equalsIgnoreCase(country)){
+        map.put("county1","PN");
+    }else if("PuertoRico".equalsIgnoreCase(country)){
+        map.put("county1","PR");
+    }else if("Portugal".equalsIgnoreCase(country)){
+        map.put("county1","PT");
+    }else if("Palau".equalsIgnoreCase(country)){
+        map.put("county1","PW");
+    }else if("Paraguay".equalsIgnoreCase(country)){
+        map.put("county1","PY");
+    }else if("Qatar".equalsIgnoreCase(country)){
+        map.put("county1","QA");
+    }else if("Reunion(French)".equalsIgnoreCase(country)){
+        map.put("county1","RE");
+    }else if("Romania".equalsIgnoreCase(country)){
+        map.put("county1","RO");
+    }else if("RussianFederation".equalsIgnoreCase(country)){
+        map.put("county1","RU");
+    }else if("Rwanda".equalsIgnoreCase(country)){
+        map.put("county1","RW");
+    }else if("SaudiArabia".equalsIgnoreCase(country)){
+        map.put("county1","SA");
+    }else if("SolomonIslands".equalsIgnoreCase(country)){
+        map.put("county1","SB");
+    }else if("Seychelles".equalsIgnoreCase(country)){
+        map.put("county1","SC");
+    }else if("Sudan".equalsIgnoreCase(country)){
+        map.put("county1","SD");
+    }else if("Sweden".equalsIgnoreCase(country)){
+        map.put("county1","SE");
+    }else if("Singapore".equalsIgnoreCase(country)){
+        map.put("county1","SG");
+    }else if("SaintHelena".equalsIgnoreCase(country)){
+        map.put("county1","SH");
+    }else if("Slovenia".equalsIgnoreCase(country)){
+        map.put("county1","SI");
+    }else if("SvalbardandJanMayenIslands".equalsIgnoreCase(country)){
+        map.put("county1","SJ");
+    }else if("SlovakRepublic".equalsIgnoreCase(country)){
+        map.put("county1","SK");
+    }else if("SierraLeone".equalsIgnoreCase(country)){
+        map.put("county1","SL");
+    }else if("SanMarino".equalsIgnoreCase(country)){
+        map.put("county1","SM");
+    }else if("Senegal".equalsIgnoreCase(country)){
+        map.put("county1","SN");
+    }else if("Somalia".equalsIgnoreCase(country)){
+        map.put("county1","SO");
+    }else if("Suriname".equalsIgnoreCase(country)){
+        map.put("county1","SR");
+    }else if("SaintTome(SaoTome)andPrincipe".equalsIgnoreCase(country)){
+        map.put("county1","ST");
+    }else if("FormerUSSR".equalsIgnoreCase(country)){
+        map.put("county1","SU");
+    }else if("ElSalvador".equalsIgnoreCase(country)){
+        map.put("county1","SV");
+    }else if("Syria".equalsIgnoreCase(country)){
+        map.put("county1","SY");
+    }else if("Swaziland".equalsIgnoreCase(country)){
+        map.put("county1","SZ");
+    }else if("TurksandCaicosIslands".equalsIgnoreCase(country)){
+        map.put("county1","TC");
+    }else if("Chad".equalsIgnoreCase(country)){
+        map.put("county1","TD");
+    }else if("FrenchSouthernTerritories".equalsIgnoreCase(country)){
+        map.put("county1","TF");
+    }else if("Togo".equalsIgnoreCase(country)){
+        map.put("county1","TG");
+    }else if("Thailand".equalsIgnoreCase(country)){
+        map.put("county1","TH");
+    }else if("Tadjikistan".equalsIgnoreCase(country)){
+        map.put("county1","TJ");
+    }else if("Tokelau".equalsIgnoreCase(country)){
+        map.put("county1","TK");
+    }else if("Turkmenistan".equalsIgnoreCase(country)){
+        map.put("county1","TM");
+    }else if("Tunisia".equalsIgnoreCase(country)){
+        map.put("county1","TN");
+    }else if("Tonga".equalsIgnoreCase(country)){
+        map.put("county1","TO");
+    }else if("EastTimor".equalsIgnoreCase(country)){
+        map.put("county1","TP");
+    }else if("Turkey".equalsIgnoreCase(country)){
+        map.put("county1","TR");
+    }else if("TrinidadandTobago".equalsIgnoreCase(country)){
+        map.put("county1","TT");
+    }else if("Tuvalu".equalsIgnoreCase(country)){
+        map.put("county1","TV");
+    }else if("Taiwan".equalsIgnoreCase(country)){
+        map.put("county1","TW");
+    }else if("Tanzania".equalsIgnoreCase(country)){
+        map.put("county1","TZ");
+    }else if("Ukraine".equalsIgnoreCase(country)){
+        map.put("county1","UA");
+    }else if("Uganda".equalsIgnoreCase(country)){
+        map.put("county1","UG");
+    }else if("UnitedKingdom".equalsIgnoreCase(country)){
+        map.put("county1","UK");
+    }else if("USAMinorOutlyingIslands".equalsIgnoreCase(country)){
+        map.put("county1","UM");
+    }else if("UnitedStates".equalsIgnoreCase(country)){
+        map.put("county1","US");
+    }else if("Uruguay".equalsIgnoreCase(country)){
+        map.put("county1","UY");
+    }else if("Uzbekistan".equalsIgnoreCase(country)){
+        map.put("county1","UZ");
+    }else if("VaticanCityState".equalsIgnoreCase(country)){
+        map.put("county1","VA");
+    }else if("SaintVincent&Grenadines".equalsIgnoreCase(country)){
+        map.put("county1","VC");
+    }else if("Venezuela".equalsIgnoreCase(country)){
+        map.put("county1","VE");
+    }else if("VirginIslands(British)".equalsIgnoreCase(country)){
+        map.put("county1","VG");
+    }else if("VirginIslands(USA)".equalsIgnoreCase(country)){
+        map.put("county1","VI");
+    }else if("Vietnam".equalsIgnoreCase(country)){
+        map.put("county1","VN");
+    }else if("Vanuatu".equalsIgnoreCase(country)){
+        map.put("county1","VU");
+    }else if("WallisandFutunaIslands".equalsIgnoreCase(country)){
+        map.put("county1","WF");
+    }else if("Samoa".equalsIgnoreCase(country)){
+        map.put("county1","WS");
+    }else if("Yemen".equalsIgnoreCase(country)){
+        map.put("county1","YE");
+    }else if("Mayotte".equalsIgnoreCase(country)){
+        map.put("county1","YT");
+    }else if("Yugoslavia".equalsIgnoreCase(country)){
+        map.put("county1","YU");
+    }else if("SouthAfrica".equalsIgnoreCase(country)){
+        map.put("county1","ZA");
+    }else if("Zambia".equalsIgnoreCase(country)){
+        map.put("county1","ZM");
+    }else if("Zaire".equalsIgnoreCase(country)){
+        map.put("county1","ZR");
+    }else if("Zimbabwe".equalsIgnoreCase(country)){
+        map.put("county1","ZW");
+    }else {
+        map.put("county1","SG");
+    }
+
+    map.put("end","END");
+}
+
+public void setSubmitJobParams(List paramList){
+    paramList.add("4");
+    paramList.add("N");
+    paramList.add("N");
+}
+
+
+public void setApplicationJobParams(List paramList){
+    //paramList.add("300000003069844");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+}

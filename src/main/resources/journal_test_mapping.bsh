@@ -1,0 +1,51 @@
+public void mapJournalValues(Map map){
+	//print("mapping journal values");
+
+	String billDate = map.get("billDate");
+	String amt = map.get("netTotalAmt");
+	String revenueAcCode = map.get("revenueAcCode");
+	String allocatedRevAmt = map.get("allocatedRevAmt");
+	String invoiceNumber = map.get("invoiceNumber");
+
+    map.put("statusCode","NEW");
+    //map.put("ledgerId","300000001878657");
+    map.put("ledgerId","300000002332017");
+    //map.put("journalSrc","Spreadsheet");
+    //map.put("journalCategory","Manual");
+    map.put("journalSrc","CRM Audit Core");
+    map.put("journalCategory","Audit Core Package");
+    map.put("currencyCode","SGD");
+    map.put("actualFlag","A");
+    //map.put("debitAccount","11-000-244107-000-00-00000-0000");
+    map.put("debitAccount","11-401-244107-000-00-00000-0000");
+    //map.put("creditAccount","11-000-143101-000-00-00000-0000");
+    map.put("creditAccount", revenueAcCode);
+    map.put("interfaceGrpIdentifier","9218592");
+    map.put("effectiveDateOfTrans",billDate);
+    map.put("journalEntryCreationDt",billDate);
+    //map.put("enteredCreditAmt",amt);
+    map.put("enteredCreditAmt", allocatedRevAmt);
+    map.put("reference1BatchNm", "ISCA BATCH - [" + invoiceNumber + "] - " + billDate);
+    map.put("reference2BatchDes", "ISCA BATCH - [" + invoiceNumber + "] - " + billDate);
+    map.put("reference4JournalEntryNm", "Journal");
+    map.put("reference5","Journal");
+
+}
+
+public void setSubmitJobParams(List paramList){
+    paramList.add("15");
+    paramList.add("N");
+    paramList.add("N");
+}
+
+public void setApplicationJobParams(List paramList){
+    paramList.add("300000001878664");
+    //paramList.add("Spreadsheet");
+    paramList.add("CRM Audit Core");
+    //paramList.add("300000001878657");
+    paramList.add("300000002332017");
+    paramList.add("ALL");
+    paramList.add("N");
+    paramList.add("N");
+    paramList.add("N");
+}

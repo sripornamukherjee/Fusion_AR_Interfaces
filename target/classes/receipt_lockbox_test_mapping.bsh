@@ -1,0 +1,73 @@
+public void mapReceiptValues(Map map){
+    print("mapping receipt values");
+
+    String customerId = map.get("customerId");
+    String collectionDate = map.get("collectionDate");
+    String formatedCollectionDate = map.get("formatedCollectionDate");
+    String transactionType = map.get("transactionType");
+    String receiptNumber = map.get("receiptNumber");
+    String paymentMode = map.get("paymentMode");
+    String invoiceNumber = map.get("invoiceNumber");
+    String invoiceAmount = map.get("invoiceAmount");
+    String receiptAmount = map.get("receiptAmount");
+    String batchName = map.get("batchName");
+
+
+    //map.put("batchName","RAJ1232316");
+    map.put("batchName", batchName);
+    //map.put("receiptMethod","ISCA_DBS_cheque(CPE)_070");
+    map.put("receiptMethod","ISCA_DBS_cheque (CPE)_070");
+    map.put("destBankAccount","033-000107-0");
+    map.put("currency","SGD");
+    map.put("bankOrigNumber","500");
+    map.put("depositDt", formatedCollectionDate);
+    map.put("depositDate", formatedCollectionDate);
+    map.put("serviceHdrBankOrgNumber", map.get("bankOrigNumber"));
+    //map.put("lockBoxNumber","Lockbox_DBS_cheque(CPE)_070");
+    map.put("lockBoxNumber","Lockbox_DBS_cheque (CPE)_070");
+    map.put("lockBoxHdrDepositDt", formatedCollectionDate);
+    map.put("lockBoxHdrBankOriginationNumber",map.get("bankOrigNumber"));
+    map.put("batchHdrDepositDt", formatedCollectionDate);
+    //map.put("batchHdrBatchAmt", collectionAmt);
+    map.put("paymentRemittanceAmt", receiptAmount);
+    map.put("paymentReceiptNumber", receiptNumber);
+    map.put("paymentReceiptDate", formatedCollectionDate);
+    map.put("paymentCustomerAccntNumber", customerId);
+    map.put("paymentDepositDate", formatedCollectionDate);
+    map.put("paymentTransactionRef1", invoiceNumber);
+    map.put("paymentAppliedAmt1", invoiceAmount);
+
+    map.put("paymentTransactionRef2", "");
+    map.put("paymentAppliedAmt2", "");
+
+    map.put("paymentTransactionRef3", "");
+    map.put("paymentAppliedAmt3", "");
+
+    map.put("paymentTransactionRef4", "");
+    map.put("paymentAppliedAmt4", "");
+ }
+
+ public void setSubmitJobParams(List paramList){
+     paramList.add("3");
+     paramList.add("N");
+     paramList.add("N");
+ }
+
+ public void setApplicationJobParams(List paramList){
+     paramList.add("Y");
+     paramList.add("N");
+     paramList.add("#NULL");
+     paramList.add("#NULL");
+     paramList.add("105");
+     paramList.add("Y");
+     paramList.add("300000003055398");
+     //paramList.add("2016-06-20");
+     paramList.add("A");
+     paramList.add("N");
+     paramList.add("N");
+     paramList.add("N");
+     paramList.add("Y");
+     //paramList.add("300000001919104");
+     paramList.add("300000002320961");
+     paramList.add("1");
+ }

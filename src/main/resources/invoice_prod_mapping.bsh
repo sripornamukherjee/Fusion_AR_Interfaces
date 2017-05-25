@@ -1,0 +1,324 @@
+public void mapInvoiceValues(Map map){
+	//print("mapping invoice values");
+
+    String fmsTransactionType = map.get("fmsTransactionType");
+    String transactionType = map.get("transactionType");
+    String transactionTypeLineItem = map.get("transactionTypeLineItem");
+    String recordType = map.get("recordType");
+    String customerId = map.get("customerId");
+    String accountType = map.get("accountType");
+    String invoiceNumber = map.get("invoiceNumber");
+    String billDate = map.get("billDate");
+    String documentType = map.get("documentType");
+    String grossTotalAmt = map.get("grossTotalAmt");
+    String paymentMode = map.get("paymentMode");
+    //String lineItem = map.get("lineItem");
+    String revenueAcCode = map.get("revenueAcCode");
+    String netTotalAmt = map.get("netTotalAmt");
+    String allocatedRevAmt = map.get("allocatedRevAmt");
+    String memYear = map.get("memYear");
+    String halfYear = map.get("halfYear");
+    String periodADate = map.get("periodADate");
+    String fullYear = map.get("fullYear");
+    String periodBDate = map.get("periodBDate");
+    String courseStartDt = map.get("courseStartDt");
+    String wdasfcRefNumber = map.get("wdasfcRefNumber");
+    String revenueAcCode = map.get("revenueAcCode");
+    String billMonth = map.get("billMonth");
+    String gstPercent = map.get("gstPercent");
+    String renewalYear = map.get("renewalYear");
+    String wdaFundedAmt = map.get("wdaFundedAmt");
+    String sfcFundedAmt = map.get("sfcFundedAmt");
+
+    map.put("businessUnitName","ISCA Business Unit");
+    map.put("transBtchSrcName","Import_InterfaceTransactions");
+    //map.put("transTypeName", transactionType);
+    map.put("transTypeName", fmsTransactionType);
+    if ("Course CPE-Fee".equalsIgnoreCase(fmsTransactionType)){
+        map.put("transTypeName", "Course Fee-CPE");
+    }
+    map.put("paymentTerms","IMMEDIATE");
+    map.put("transactionDate",billDate);
+    map.put("accountingDt",billDate);
+    map.put("transactionNumber",invoiceNumber);
+    map.put("billToCustomerAccntNumber", customerId);
+    map.put("billToCustomerSiteNumber", customerId);
+    map.put("transactionLineType","LINE");
+    map.put("transactionLineDescr",transactionTypeLineItem);
+    map.put("currencyCode","SGD");
+    map.put("currencyConversionType","User");
+    map.put("currecnyConversionRate","1.00");
+    //map.put("transactionLineAmt",netTotalAmt);
+    map.put("transactionLineAmt", allocatedRevAmt);
+    map.put("transactionLineQty","1.00");
+    //map.put("unitSellingPrice",netTotalAmt);
+    map.put("unitSellingPrice", allocatedRevAmt);
+    //map.put("lineTransactionFlexfieldContxt","ISCA_TEST_AUTOINVOICE");
+    map.put("lineTransactionFlexfieldContxt","ISCA_AUTOINVOICE");
+
+    //for selection of revenue rule
+    if ("Course CPE-Fee".equalsIgnoreCase(fmsTransactionType)){
+        map.put("invoicingRuleName","Advance Invoice");
+        map.put("revenueSchedulingRuleName","Immediate");
+        map.put("revenuedSchedulingRuleStrtDt", courseStartDt);
+        map.put("noOfRevenuePeriods","");
+    }else {
+        //if ("Annual Subscription Fee".equalsIgnoreCase(transactionTypeLineItem) || "Sub Fee-Associate".equalsIgnoreCase(fmsTransactionType)){
+        if ("11-301-401110-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) || "11-301-401120-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) || "11-301-401130-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) || "11-301-401140-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) || "11-301-401150-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+            if ("01".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","1 of 12 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","12");
+            }else if ("02".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","2 of 12 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","11");
+            }else if ("03".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","3 of 12 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","10");
+            }else if ("04".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","4 of 12 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","9");
+            }else if ("05".equalsIgnoreCase(billMonth) || "06".equalsIgnoreCase(billMonth) || "07".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","1 of 6 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","6");
+            }else if ("08".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","2 of 6 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","5");
+            }else if ("09".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","3 of 6 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","4");
+            }else if ("10".equalsIgnoreCase(billMonth)){
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","4 of 6 Variable Schedule_SIT");
+                map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("noOfRevenuePeriods","3");
+            }else {
+                map.put("invoicingRuleName","Advance Invoice");
+                map.put("revenueSchedulingRuleName","1 of 12 Variable Schedule_SIT");
+                //map.put("revenuedSchedulingRuleStrtDt", billDate);
+                map.put("revenuedSchedulingRuleStrtDt", renewalYear + "/01/01");
+                map.put("noOfRevenuePeriods","12");
+            }
+        } else {
+            map.put("invoicingRuleName","Advance Invoice");
+            map.put("revenueSchedulingRuleName","Immediate");
+            map.put("revenuedSchedulingRuleStrtDt", billDate);
+            map.put("noOfRevenuePeriods","");
+        }
+    }
+
+    //map.put("memoLineName", transactionTypeLineItem);         //memo line is based on 'Revenue A/c Code'
+    //print("revenueAcCode : " + revenueAcCode);
+
+    //for memoline selection thru revenue account code
+    if ("11-113-505101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Review Fees_QA");
+    }else if ("11-301-507311-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // memo line name changed according to 05/10 file
+        map.put("memoLineName", "Other Sundry Income-Cards Reb/Com_MSM");
+    }else if ("11-113-507311-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Misc Sales or Fees charged to Members/Students_QA");
+        map.put("memoLineName", "Misc Sales/Fees _QA");
+    }else if ("11-301-401110-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // memo line name changed according to 05/10 file
+        map.put("memoLineName", "Sub Fees-Affiliate_MSM");
+    }else if ("11-301-401120-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // memo line name changed according to 05/10 file
+        map.put("memoLineName", "Sub Fees-Associate_MSM");
+    }else if ("11-301-401130-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+         //map.put("memoLineName", "Subscription Fees-Non-practising_MSM");
+        map.put("memoLineName", "Sub Fees-Non-Prac_MSM");
+    }else if ("11-301-401140-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+         //map.put("memoLineName", "Subscription Fees-Practising_MSM");
+        map.put("memoLineName", "Sub Fees-Prac_MSM");
+    }else if ("11-301-401150-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Subscription Fees-Members in retirement_MSM");
+        map.put("memoLineName", "Sub Fees-MIR_MSM");
+    }else if ("11-301-401160-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // added according to 05/10 file
+        map.put("memoLineName", "Sub Fee-Fellow_MSM");
+    }else if ("11-301-402110-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Admission Fees-Affiliate_MSM");
+        map.put("memoLineName", "Adm Fees-Affiliate_MSM");
+    }else if ("11-301-402120-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Admission Fees-Associate_MSM");
+        map.put("memoLineName", "Adm Fees-Associate_MSM");
+    }else if ("11-301-402130-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Admission Fees-Non-Practising_MSM");
+        map.put("memoLineName", "Adm Fees-Non-Prac_MSM");
+    }else if ("11-301-402140-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Admission Fees-Practising_MSM");
+        map.put("memoLineName", "Adm Fees-Prac_MSM");
+    }else if ("11-301-402150-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // added according to 05/10 file
+        map.put("memoLineName", "Adm Fee-Fellow_MSM");
+    }else if ("11-301-507211-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Fee Income-Membership Penalty Fees_MSM");
+        map.put("memoLineName", "Other Fee Income-Mem Penalty _MSM");
+    }else if ("11-301-507221-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // added according to 05/10 file
+        map.put("memoLineName", "Other Income-Mem Reinst_MSM");
+    }else if ("11-401-403101-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_CPE");
+    }else if ("11-401-403101-420-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_PAC");
+    }else if ("11-401-403101-430-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_PPP");
+    }else if ("11-401-403101-440-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_PMP");
+    }else if ("11-401-403101-450-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_PAW");
+    }else if ("11-401-403101-460-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Course Fees_CPE_IFCM");
+    }else if ("11-401-501101-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "E-Learning Income_CPE_CPE");
+        map.put("memoLineName", "E-Learning Inc_CPE_CPE");
+    }else if ("11-301-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from Seminars and Talks_MSM");
+        map.put("memoLineName", "Fees from Sem/Talks_MSM");
+    }else if ("11-108-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from Seminars and Talks_ID");
+        map.put("memoLineName", "Fees from Sem/Talks_ID");
+    }else if ("11-103-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from Seminars and Talks_EVT");
+        map.put("memoLineName", "Fees from Sem/Talks_EVTS");
+    }else if ("11-103-506401-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        // added according to 05/10 file
+        map.put("memoLineName", "Congress Inc_EVTS");
+    }else if ("11-113-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+       //map.put("memoLineName", "Fees from Seminars and Talks_QA");
+        map.put("memoLineName", "Fees from Sem/Talks_QA");
+    }else if ("11-107-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from Seminars and Talks_ICT");
+        map.put("memoLineName", "Fees from Sem/Talks_ICT");
+    }else if ("11-114-506101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from Seminars and Talks_TAPS");
+        map.put("memoLineName", "Fees from Sem/Talks_TAPS");
+    }else if ("11-401-506201-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Fees from CPA Dinner Talks_CPE_CPE");
+        map.put("memoLineName", "CPA Dinner Talks_CPE_CPE");
+    }else if ("11-103-506401-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+       //map.put("memoLineName", "Accounting Congress Income_EVTS");
+        map.put("memoLineName", "Congress Inc_EVTS");
+    }else if ("11-401-403401-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Course Fees Discount _CPE _CPE");
+        map.put("memoLineName", "Fees Discount _CPE _CPE");
+    }else if ("11-401-403401-420-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+         //map.put("memoLineName", "Course Fees Discount _CPE _PAC");
+        map.put("memoLineName", "Fees Discount _CPE _PAC");
+    }else if ("11-401-403401-430-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Course Fees Discount _CPE _PPP");
+        map.put("memoLineName", "Fees Discount _CPE _PPP");
+    }else if ("11-401-403401-440-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Course Fees Discount _CPE _PMP");
+        map.put("memoLineName", "Fees Discount _CPE _PMP");
+    }else if ("11-401-403401-450-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Course Fees Discount _CPE _PAW");
+        map.put("memoLineName", "Fees Discount _CPE _PAW");
+    }else if ("11-401-403401-460-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Course Fees Discount _CPE _IFCM");
+        map.put("memoLineName", "Fees Discount _CPE _IFCM");
+    }else if ("11-401-507331-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-offs_CPE_CPE");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_CPE");
+    }else if ("11-401-507331-420-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+         //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-offs_CPE_PAC");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_PAC");
+    }else if ("11-401-507331-430-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-offs_CPE_PPP");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_PPP");
+    }else if ("11-401-507331-440-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-offs_CPE_PMP");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_PMP");
+    }else if ("11-401-507331-450-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-offs_CPE_PAW");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_PAW");
+    }else if ("11-401-507331-460-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        //map.put("memoLineName", "Other Sundry Income-Write-Backs/Write-off_CPE_IFCM");
+        map.put("memoLineName", "Other Sundry Income-W/B W/O_CPE_IFCM");
+    }else if ("11-401-244107-000-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Adv-Audit Core Pkg");
+    }else if ("11-401-507231-410-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_CPE");
+    }else if ("11-401-507231-420-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_PAC");
+    }else if ("11-401-507231-430-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_PPP");
+    }else if ("11-401-507231-440-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_PMP");
+    }else if ("11-401-507231-450-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_PAW");
+    }else if ("11-401-507231-460-00-00000-0000".equalsIgnoreCase(revenueAcCode)){
+        map.put("memoLineName", "Other Fee Income-Defer_CPE_IFCM");
+    }else if ("11-000-143101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) && !"".equalsIgnoreCase(sfcFundedAmt)){
+        map.put("memoLineName", "SFC Receivables");
+    }else if ("11-000-143101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) && !"".equalsIgnoreCase(wdaFundedAmt)){
+        map.put("memoLineName", "WDA Receivables");
+    }
+
+    //for the wda and sfc funded validation
+    map.put("bshMappingValid", "Valid");
+    if ("11-000-143101-000-00-00000-0000".equalsIgnoreCase(revenueAcCode) && !"".equalsIgnoreCase(wdaFundedAmt) && !"".equalsIgnoreCase(sfcFundedAmt)){
+        map.put("bshMappingValid", "WDA/SFC Invalid");
+    }
+
+    map.put("receiptMethodName","");
+
+    map.put("printingOption","PRI");
+    //double invoiceAmt = Float.parseFloat(allocatedRevAmt);
+
+    if ("".equalsIgnoreCase(gstPercent)){
+        map.put("taxClassificationCode","");
+    }else {
+        map.put("taxClassificationCode","OUTPUT_NEW_7");
+    }
+
+    map.put("invoiceTransFlexfieldSeg1", paymentMode);
+}
+
+public void setSubmitJobParams(List paramList){
+    paramList.add("2");
+    paramList.add("N");
+    paramList.add("N");
+}
+
+public void setApplicationJobParams(List paramList){
+    paramList.add("300000001919104");
+    paramList.add("Import_InterfaceTransactions");
+    //paramList.add("23-05-2016");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("#NULL");
+    paramList.add("Y");
+    paramList.add("#NULL");
+}
+
