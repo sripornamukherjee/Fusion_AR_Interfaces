@@ -142,6 +142,7 @@ public class InvoiceCustomWriter implements ItemWriter<Invoice> {
     			        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
     			        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
     			        		taxLine.setRevenuedSchedulingRuleStrtDt(taxLine.getBillDate());
+    			        		taxLine.setTransactionLineDescr("To account for GST");
     			        		taxLine.setTaxClassificationCode("OUTPUT-ONA");
     			        		LOG.info("Writing tax line");
     			        		singleton.setLineSegment(taxLine);

@@ -295,6 +295,7 @@ public class InvoiceJobCompletionListener extends JobExecutionListenerSupport {
 		        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
 		        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
 		        		taxLine.setRevenuedSchedulingRuleStrtDt(taxLine.getBillDate());
+		        		taxLine.setTransactionLineDescr("To account for GST");
 		        		taxLine.setTaxClassificationCode("");
 		        		LOG.info("Writing tax line");
 		        		singleton.setLineSegment(taxLine);
