@@ -5,7 +5,7 @@ import com.compasites.constants.Constants;
 import java.math.BigDecimal;
 
 /**
- * Created by Sobhan Babu on 26-04-2016.
+ * Created by Sriporna Mukherjee on 26-04-2016.
  */
 public class Invoice {
 
