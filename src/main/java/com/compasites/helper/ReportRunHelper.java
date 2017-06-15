@@ -220,7 +220,7 @@ public class ReportRunHelper {
     public String getInvoiceLineReference(String customerId, String invoiceNumber, String amount) throws AccessDeniedException_Exception,
     		InvalidParametersException_Exception, OperationFailedException_Exception, UnsupportedEncodingException, MalformedURLException {
     	//LOG.info("Get Invoice Line Ref");
-    	String[] arr = null;
+    	//String[] arr = null;
     	String returnVal;
         int count = 1;
           while(true) {
@@ -286,35 +286,7 @@ public class ReportRunHelper {
                   java.util.Base64.Decoder dec = java.util.Base64.getDecoder();
                   byte[] strdec = dec.decode(base64Str);
                   returnVal = new String(strdec, Constants.UTF8);
-                  arr = new String[3];
-     
-                  /*CreditMemoSingleton singleton = CreditMemoSingleton.getInstance();
-                  
-                  for (int i = -1; (i = returnVal.indexOf(Constants.INTERFACE_LINE_CONTEXT, i + 1)) != -1; ) {
-                	    System.out.println(i);
-                	    if(!singleton.isInvoiceRefAvailable(returnVal.substring(i,returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, i)))) {
-                	    	singleton.addInvoiceRef(returnVal.substring(i,returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, i)));
-                	    	//LOG.info(returnVal.substring(i,returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, i) + 28));
-                	    	returnVal = returnVal.substring(i,returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, i) + 28);
-                	    	break;
-                	    } else {
-                	    	continue;
-                	    }   
-                  }
-                  
-                  
-                  if (returnVal.indexOf(Constants.INTERFACE_LINE_CONTEXT) >= 0) {
-                	  arr[0] = returnVal.substring(returnVal.indexOf(Constants.INTERFACE_LINE_CONTEXT) + 24, returnVal.indexOf(Constants.INTERFACE_LINE_CONTEXT_END));
-                	  //LOG.info("Interface Line Context: "+arr[0]);
-                  }
-                  if (returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) > 0) {
-                	  arr[1] = returnVal.substring(returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) + 27, returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1_END));
-                	  //LOG.info("Interface Line Attribute1: "+arr[1]);
-                  }
-                  if (returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) > 0) {
-                	  arr[2] = returnVal.substring(returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) + 27, returnVal.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END));
-                	  //LOG.info("Interface Line Attribute2: "+arr[2]);
-                  }*/
+                  //arr = new String[3];
                   break;
               } catch (AccessDeniedException_Exception ade) {
                   LOG.error("Access Denied Exception message : " + ade.getMessage());
@@ -357,6 +329,119 @@ public class ReportRunHelper {
           return returnVal;
     
     }
+    
+    public String getInvoiceTaxLineReference(String customerId, String invoiceNumber, String amount) throws AccessDeniedException_Exception,
+	InvalidParametersException_Exception, OperationFailedException_Exception, UnsupportedEncodingException, MalformedURLException {
+//LOG.info("Get Invoice Line Ref");
+//String[] arr = null;
+String returnVal;
+int count = 1;
+  while(true) {
+      try {
+    	  //String custTrxId = getCustTrxId(customerId, invoiceNumber);            	  
+          URL url = new URL(reportRunEndpointaddress);
+          ReportService_Service repService = new ReportService_Service(url);
+          MyHandlerResolver myHandlerResolver = new MyHandlerResolver();
+          repService.setHandlerResolver(myHandlerResolver);
+          
+          ReportService reportService = repService.getReportService();
+
+          ReportRequest reportRequest = new ReportRequest();
+          reportRequest.setAttributeTemplate(Constants.INVOICE_LINE_REF_ACCOUNT);
+          reportRequest.setReportAbsolutePath(Constants.INVOICE_LINE_REF_REPORT_ABS_PATH);
+          ParamNameValues paramNameVals = new ParamNameValues();
+          ArrayOfParamNameValue arrParamNameVal = new ArrayOfParamNameValue();
+          List<ParamNameValue> paramNameValList = arrParamNameVal.getItem();
+          
+
+          ParamNameValue customerNum = new ParamNameValue();
+          customerNum.setName(Constants.PR_CUSTOMER_NUMBER );
+          ArrayOfString values = new ArrayOfString();
+          List<String> strValues = values.getItem();
+          strValues.add(customerId);
+          customerNum.setValues(values);
+          
+          ParamNameValue buName = new ParamNameValue();
+          buName.setName(Constants.PR_BU_NAME);
+          ArrayOfString values1 = new ArrayOfString();
+          List<String> strValues1 = values1.getItem();
+          strValues1.add(businessUnitName);
+          buName.setValues(values1);
+
+          ParamNameValue trxNumber = new ParamNameValue();
+          trxNumber.setName(Constants.PR_TRX_NUMBER);
+          ArrayOfString values2 = new ArrayOfString();
+          List<String> strValues2 = values2.getItem();
+          strValues2.add(invoiceNumber);
+          trxNumber.setValues(values2);
+
+          
+          ParamNameValue unitAmount = new ParamNameValue();
+          unitAmount.setName(Constants.PR_UNIT_SELLING_PRICE);
+          ArrayOfString values3 = new ArrayOfString();
+          List<String> strValues3 = values3.getItem();
+          strValues3.add(amount);
+          unitAmount.setValues(values3);
+
+          paramNameValList.add(customerNum);
+          paramNameValList.add(buName);
+          paramNameValList.add(trxNumber);
+          paramNameValList.add(unitAmount);
+        
+          paramNameVals.setListOfParamNameValues(arrParamNameVal);
+          reportRequest.setParameterNameValues(paramNameVals);
+          
+          reportRequest.setSizeOfDataChunkDownload(2024);
+          ReportResponse res = reportService.runReport(reportRequest, fusionUsername, fusionPassword);
+          byte repBytes[] = res.getReportBytes();
+
+          String base64Str = byteArrayToBase64(repBytes, repBytes.length);
+          java.util.Base64.Decoder dec = java.util.Base64.getDecoder();
+          byte[] strdec = dec.decode(base64Str);
+          returnVal = new String(strdec, Constants.UTF8);
+          //arr = new String[3];
+          break;
+      } catch (AccessDeniedException_Exception ade) {
+          LOG.error("Access Denied Exception message : " + ade.getMessage());
+          LOG.error("Access Denied Exception :", ade);
+          throw ade;
+      } catch (InvalidParametersException_Exception ipe) {
+          LOG.error("Invalid Paramter Exception message : " + ipe.getMessage());
+          LOG.error("Invalid Paramter Exception :", ipe);
+          throw ipe;
+      } catch (OperationFailedException_Exception ofe) {
+          LOG.error("Operation failed Exception message : " + ofe.getMessage());
+          LOG.error("Operation failed Exception :", ofe);
+          throw ofe;
+      } catch (UnsupportedEncodingException ue) {
+          LOG.error("UnsupportedEncodingException message : " + ue.getMessage());
+          LOG.error("UnsupportedEncodingException Exception :", ue);
+          throw ue;
+      } catch (MalformedURLException urlE) {
+          LOG.error("Service Exception message : " + urlE.getMessage());
+          LOG.error("Service Exception :", urlE);
+          throw urlE;
+      } catch (Exception e) {
+          LOG.error("Exception message : " + e.getMessage());
+          LOG.error("Exception :", e);
+          if(count < Constants.LOOP_COUNT){
+              try {
+                  count++;
+                  Thread.sleep(Constants.THREAD_SLEEP_VALUE);
+              }catch (InterruptedException ie) {
+                  LOG.error("Interrupted Exception message : " + ie.getMessage());
+                  LOG.error("Interrupted Exception : ", ie);
+              }
+          }else {
+              throw e;
+          }
+      }
+  }
+
+  //return arr;
+  return returnVal;
+
+}
 
     public String getBatchIdentifier() throws AccessDeniedException_Exception,
             InvalidParametersException_Exception, OperationFailedException_Exception, UnsupportedEncodingException, MalformedURLException{

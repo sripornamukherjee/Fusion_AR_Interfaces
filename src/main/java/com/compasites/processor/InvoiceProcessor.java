@@ -180,9 +180,7 @@ public class InvoiceProcessor implements ItemProcessor<Invoice, Invoice>{
                         invoice.setErrorMsg(Constants.FMS_TRANSACTION_TYPE_EMPTY_ERROR_MSG);
                     } else if(!isValidTransactionTypeLineItem){
                         invoice.setErrorMsg(Constants.TRANSACTION_TYPE_LINEITEM_EMPTY_ERROR_MSG);
-                    } /*else if(!isValidRevenueRecogDate){
-                        invoice.setErrorMsg(Constants.PAST_COURSE_START_DT);
-                    }*/ else if(!isWdaSfcValid){
+                    } else if(!isWdaSfcValid){
                         invoice.setErrorMsg(Constants.WDA_SFC_AMOUNT_ERROR_MSG);
                     } else if(!isRenewalYearValid){
                     	invoice.setErrorMsg(Constants.INVALID_RENEWAL_YR_ERROR_MSG);

@@ -184,9 +184,13 @@ public class InvoiceSingleton {
                     else {
 	                    allocatedRevAmt = allocatedRevAmt.subtract(getDiscountAmount(invoice)); 
 	                    headerAmtSum = allocatedRevAmt;
-	                    BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(invoice)));     
+	                    
+	                    /* Removed on 01/06/17
+	                     * BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(invoice)));     
 	                    headerAmtSum = headerAmtSum.subtract(getTotalFundingAmount(invoice));
-	                    headerAmtSum = headerAmtSum.add(gstAmount);
+	                    headerAmtSum = headerAmtSum.add(gstAmount);*/
+	                    
+	                    headerAmtSum = headerAmtSum.subtract(getTotalFundingAmount(invoice));
 	                    invoice.setHeaderAmt(new BigDecimal(invoice.getAllocatedRevAmt()));
                     }
                     validMap.put(invoice.getInvoiceNumber(), list);
@@ -218,10 +222,15 @@ public class InvoiceSingleton {
                         	LOG.info("Funding/ Discount line");
                         } else {
                         	temp = allocatedRevAmt.subtract(getDiscountAmount(invice));
-    	                    BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(invice)));
+                        	
+    	                    /* Removed on 01/06/17
+    	                     * BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(invice)));
     	                    temp = temp.subtract(getTotalFundingAmount(invice));
     	                    headerAmtSum = headerAmtSum.add(temp);
-    	                    headerAmtSum = headerAmtSum.add(gstAmount);
+    	                    headerAmtSum = headerAmtSum.add(gstAmount);*/
+                        	
+                        	temp = temp.subtract(getTotalFundingAmount(invice));
+                        	headerAmtSum = headerAmtSum.add(temp); 
                         }
                     }
                 }
@@ -295,7 +304,7 @@ public class InvoiceSingleton {
     }
     
     public BigDecimal getGstAmount(Invoice i) {
-    	 String gstPercent = i.getGstPercent();
+    	 /*String gstPercent = i.getGstPercent();
     	 BigDecimal gstAmount = new BigDecimal(0);
          BigDecimal allocatedRevAmt = new BigDecimal(i.getAllocatedRevAmt());
          BigDecimal discount = getDiscountAmount(i);
@@ -311,9 +320,9 @@ public class InvoiceSingleton {
              	gstAmount = gstAmount.divide(new BigDecimal(100));
          	} 
          	
-         }
-         
-         return gstAmount;
+         }*/
+    	BigDecimal gstAmount = new BigDecimal(i.getGstAmount());
+        return gstAmount;
          	
     }
 

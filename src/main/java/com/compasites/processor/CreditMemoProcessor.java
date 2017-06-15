@@ -149,7 +149,7 @@ public class CreditMemoProcessor implements ItemProcessor<CreditMemo, CreditMemo
 	             			       invoiceRef = reportRunHelper.getInvoiceLineReference(creditMemo.getCustomerId(),
     	                				creditMemo.getVoucherRefNumber(), refAmount);
 		                			
-	             			       for (int j = -1; (j = invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT, j + 1)) != -1; ) {
+	             			       for (int j = -1; (j = invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT, j + 1)) != -1;) {
 	             			    	   if(!singleton.isInvoiceRefAvailable(invoiceRef.substring(j,invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, j)))) {
 	             			    		   LOG.info("Invoice Ref available");
 	             			    		   singleton.addInvoiceRef(invoiceRef.substring(j,invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END, j)));
@@ -162,21 +162,19 @@ public class CreditMemoProcessor implements ItemProcessor<CreditMemo, CreditMemo
 	             			     
 		             			     String[] arr = new String[3];
 		             			     if (invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT) >= 0) {
-		                           	  arr[0] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT) + 24, invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT_END));
+		             			    	 arr[0] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT) + 24, invoiceRef.indexOf(Constants.INTERFACE_LINE_CONTEXT_END));
 		                             }
 		                             if (invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) > 0) {
-		                           	  arr[1] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) + 27, invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1_END));
+		                            	 arr[1] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) + 27, invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1_END));
 		                             }
 		                             if (invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) > 0) {
-		                           	  arr[2] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) + 27, invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END));
+		                            	 arr[2] = invoiceRef.substring(invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) + 27, invoiceRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END));
 		                             }
                 					if (arr[0] != null && arr[1] != null && arr[2] != null) {	
 			        					creditMemo.setRefTransactionFlexfieldCntxt(arr[0]);
 			        					creditMemo.setRefTransactionFlexfieldSegment1(arr[1]);
 			        					creditMemo.setRefTransactionFlexfieldSegment2(arr[2]);
 			        				} else {
-			        					/*LOG.info("Invoice not available in Fusion");
-			        					isInvoiceAvailable = false;*/
 			        					creditMemo.setRefTransactionFlexfieldCntxt(Constants.EMTPY);
 			        					creditMemo.setRefTransactionFlexfieldSegment1(Constants.EMTPY);
 			        					creditMemo.setRefTransactionFlexfieldSegment2(Constants.EMTPY);

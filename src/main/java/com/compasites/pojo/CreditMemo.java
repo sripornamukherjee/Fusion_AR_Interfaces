@@ -421,6 +421,76 @@ public class CreditMemo {
         return sb.toString();
     }
 
+    public String getTaxLine(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(Constants.CVS_SEPERATOR)
+                .append(transBtchSrcName).append(Constants.CVS_SEPERATOR)
+                .append(transTypeName).append(Constants.CVS_SEPERATOR)
+                .append(paymentTerms).append(Constants.CVS_SEPERATOR)
+                .append(transactionDate).append(Constants.CVS_SEPERATOR)
+                .append(accountingDt).append(Constants.CVS_SEPERATOR)
+                .append(transactionNumber).append(Constants.CVS_SEPERATOR)
+                //.append(originalSysBillToCustRef)
+                .append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR)
+                //.append(origSysShipToCustomerAccntRef)
+                .append(",,,,,")
+                .append(billToCustomerAccntNumber).append(Constants.CVS_SEPERATOR)
+                .append(billToCustomerSiteNumber).append(Constants.CVS_SEPERATOR)
+                .append(",,,,,")
+                .append("TAX").append(Constants.CVS_SEPERATOR)
+                .append(transactionLineDescr).append(Constants.CVS_SEPERATOR)
+                .append(currencyCode).append(Constants.CVS_SEPERATOR)
+                .append(currencyConversionType).append(Constants.CVS_SEPERATOR)
+                .append(currecnyConversionDt).append(Constants.CVS_SEPERATOR)
+                .append(currecnyConversionRate).append(Constants.CVS_SEPERATOR)
+                .append(transactionLineAmt).append(Constants.CVS_SEPERATOR)
+                .append(transactionLineQty).append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR)
+                .append(unitSellingPrice)
+                .append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR)
+                .append(lineTransactionFlexfieldContxt).append(Constants.CVS_SEPERATOR)
+                .append(lineTransactionFlexfieldSeg1).append(Constants.CVS_SEPERATOR)
+                .append(lineTransactionFlexfieldSeg2).append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,,,,,,,")
+                /*.append(taxClassificationCode)*/.append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,,,,,")
+                /*.append(invoicingRuleName).append(Constants.CVS_SEPERATOR)
+                .append(revenueSchedulingRuleName).append(Constants.CVS_SEPERATOR)
+                .append(noOfRevenuePeriods).append(Constants.CVS_SEPERATOR)
+                .append(revenuedSchedulingRuleStrtDt).append(Constants.CVS_SEPERATOR)*/
+                .append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,,,,,,,,,").append(Constants.TAX_RATE_CODE)
+                .append(",,,,,,,,,,,")/*.append(lineAmtIncludesTaxFlag)*/
+                .append(",,,,,,,,,,,,,,")
+                .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
+                .append(memoLineName)
+                .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
+                .append(linkToTransactionsFlexfieldCntxt).append(Constants.CVS_SEPERATOR)
+                .append(linkToTransactionsFlexfieldSegment1).append(Constants.CVS_SEPERATOR)
+                .append(linkToTransactionsFlexfieldSegment2)
+                .append(",,,,,,,,,,,,,,")
+                .append(refTransactionFlexfieldCntxt).append(Constants.CVS_SEPERATOR)
+                .append(refTransactionFlexfieldSegment1).append(Constants.CVS_SEPERATOR)
+                .append(refTransactionFlexfieldSegment2).append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,")                
+                .append(printingOption)
+                .append(",,,,,,,,,,,,,,,,,,,,,,,,,,,,")
+                .append(Constants.CVS_SEPERATOR)
+                .append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,")
+                .append(Constants.CVS_SEPERATOR)
+                .append(",,,,,,,,,,,,,,,,,,")
+                .append(invoiceTransFlexfieldSeg1)
+                .append(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,")
+                .append(businessUnitName).append(Constants.CVS_SEPERATOR).append(Constants.END_FLAG).append("\r\n");
+
+        return sb.toString();
+    }
+    
     public String getErrorLine(){
         StringBuilder sb = new StringBuilder();
         sb.append(srcSysId).append(Constants.CVS_SEPERATOR)

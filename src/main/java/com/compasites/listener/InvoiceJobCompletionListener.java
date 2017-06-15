@@ -218,90 +218,78 @@ public class InvoiceJobCompletionListener extends JobExecutionListenerSupport {
             }
             if (invoiceList != null) {
                 if (valid) {
-                	boolean additionalTaxLineCheck = false;
-                	for (Invoice invoce : invoiceList) {
-                		additionalTaxLineCheck = invoce.getMemoLineName().equalsIgnoreCase(Constants.SFC_MEMOLINE) &&
-                  				!invoce.getGstAmount().equals("0.00") && invoce.getGrossTotalAmt().equals("0.00");
-                		if(additionalTaxLineCheck)
-                			break;
-                	}
                 	Invoice taxLine = null;
-                    for (Invoice invoce : invoiceList) {  
-                    	  BigDecimal checkHeaderAmt = new BigDecimal(df.format(invoce.getHeaderAmt()));
-                          BigDecimal checkGrossTotalAmt = new BigDecimal(df.format(new BigDecimal(invoce.getGrossTotalAmt())));
-                          BigDecimal roundingDiff = (checkHeaderAmt.subtract(checkGrossTotalAmt)).abs();
-                      
-                         if (roundingDiff.compareTo(new BigDecimal("0.10")) == 1){
-                        	LOG.info("INVOICE NUMBER: "+invoce.getInvoiceNumber()+" being written to error file");
-                            invoce.setErrorMsg(Constants.GROSS_TOTAL_AMOUNT_ERROR_MSG);
-                            errorFileBw.write(invoce.getErrorLine());
-                        }else {
-                        	BigDecimal allocatedRev = new BigDecimal(invoce.getAllocatedRevAmt());
-                        	
-                        	//If tax needs to be added as separate line
-                        	if(additionalTaxLineCheck /*|| !(invoce.getSfcFundedAmt().equalsIgnoreCase(Constants.EMTPY)&
-                        			invoce.getWdaFundedAmt().equalsIgnoreCase(Constants.EMTPY))*/) {
-                        		invoce.setTaxClassificationCode("");
-                        		
-                        	} else {
-                        		
-                        		// If allocated rev is +ve OR (SFC and WDA are empty)
-                            	// Deduct discount amount
-                            	if(!invoce.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) {
-                            		if(allocatedRev.signum() == -1)
-                            			allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
-                            		
-                            		BigDecimal newAmt = allocatedRev.subtract(new BigDecimal(invoce.getDiscountAmt()));
-                            		invoce.setTransactionLineAmt(newAmt.toString());
-                            		invoce.setUnitSellingPrice(newAmt.toString());
-                            	}
-                            	if(!invoce.getForfeitedAmt().equalsIgnoreCase(Constants.EMTPY)) {
-                            		if(allocatedRev.signum() == -1)
-                            			allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
-                            		
-                            		BigDecimal newAmt1 = allocatedRev.subtract(new BigDecimal(invoce.getForfeitedAmt()));
-                            		invoce.setTransactionLineAmt(newAmt1.toString());
-                            		invoce.setUnitSellingPrice(newAmt1.toString());
-                            	}
-                            	if(!invoce.getCouponAmt().equalsIgnoreCase(Constants.EMTPY)) {
-                            		if(allocatedRev.signum() == -1)
-                            			allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
-                            		
-                            		BigDecimal newAmt2 = allocatedRev.subtract(new BigDecimal(invoce.getCouponAmt()));
-                            		invoce.setTransactionLineAmt(newAmt2.toString());
-                            		invoce.setUnitSellingPrice(newAmt2.toString());
-                            	}
-                            	// if GST is 0 or line is for WDA
-                            	//LOG.info(invoce.getTaxClassificationCode());
-                            	if(invoce.getGstAmount().equals("0.00") /*|| invoce.getMemoLineName().equalsIgnoreCase(Constants.WDA_MEMOLINE)*/) {
-                            		// Condition added for MSM 0 GST invoices - OUTPUT-OZR tax code needed
-                            		if(!invoce.getGstPercent().contains("0"))
-                            			invoce.setTaxClassificationCode("");
-                            	}
-                            	
-                            	invoce.setLineAmtIncludesTaxFlag("");
-                        	}
-
-                        	bw.write(invoce.getContent());
+                    for (Invoice invoce : invoiceList) {
+                    		
+                    	BigDecimal headerAmtSum = new BigDecimal(df.format(invoce.getHeaderAmt()));
+                        BigDecimal grossTotalAmt = new BigDecimal(df.format(new BigDecimal(invoce.getGrossTotalAmt())));
+                        BigDecimal gst = new BigDecimal(df.format(new BigDecimal(invoce.getGstAmount())));
                         
-                        	if(additionalTaxLineCheck && !(invoce.getMemoLineName().equalsIgnoreCase(Constants.SFC_MEMOLINE) 
-                        			|| invoce.getMemoLineName().equalsIgnoreCase(Constants.WDA_MEMOLINE))) {
-    			        		taxLine = invoce;
-    			        	}
+                        BigDecimal roundingDiff = (headerAmtSum.subtract(grossTotalAmt)).abs();
+                        BigDecimal allocatedRev = new BigDecimal(invoce.getAllocatedRevAmt());
+                        
+                        // Changed on 01/06/17
+                        if (/*roundingDiff.compareTo(new BigDecimal("0.10")) == 1*/ 
+                        		gst.add(headerAmtSum).compareTo(grossTotalAmt) != 0){
+                        	LOG.info("INVOICE NUMBER: "+invoce.getInvoiceNumber()+" being written to error file");
+                        	invoce.setErrorMsg(Constants.GROSS_TOTAL_AMOUNT_ERROR_MSG);
+                            errorFileBw.write(invoce.getErrorLine());
+                        } else {	
+                            if(!invoce.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                            	if(allocatedRev.signum() == -1)
+                            		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
+                            		
+                            	BigDecimal newAmt = allocatedRev.subtract(new BigDecimal(invoce.getDiscountAmt()));
+                            	invoce.setTransactionLineAmt(newAmt.toString());
+                            	invoce.setUnitSellingPrice(newAmt.toString());
+                            }
+                            if(!invoce.getForfeitedAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                            	if(allocatedRev.signum() == -1)
+                            		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
+                            		
+                            	BigDecimal newAmt1 = allocatedRev.subtract(new BigDecimal(invoce.getForfeitedAmt()));
+                            	invoce.setTransactionLineAmt(newAmt1.toString());
+                            	invoce.setUnitSellingPrice(newAmt1.toString());
+                            }
+                            if(!invoce.getCouponAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                            	if(allocatedRev.signum() == -1)
+                            		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
+                            		
+                            	BigDecimal newAmt2 = allocatedRev.subtract(new BigDecimal(invoce.getCouponAmt()));
+                            	invoce.setTransactionLineAmt(newAmt2.toString());
+                            	invoce.setUnitSellingPrice(newAmt2.toString());
+                            
+                            }
+                            
+                            if(headerAmtSum.signum() == -1) {
+                            	if(invoce.getMemoLineName().equals(Constants.SFC_MEMOLINE))
+                            		invoce.setLineAmtIncludesTaxFlag("Y");
+                            	else
+                            		invoce.setLineAmtIncludesTaxFlag("N");
+                            }else
+                            	invoce.setLineAmtIncludesTaxFlag("");
+                            
+                        bw.write(invoce.getContent());
+                        if(!invoce.getMemoLineName().equals(Constants.WDA_MEMOLINE) && 
+                        		!invoce.getMemoLineName().equals(Constants.SFC_MEMOLINE) &&
+                        	allocatedRev.signum() > 0)
+                        	taxLine = invoce;	
                         }
                     }
-                    if(additionalTaxLineCheck && taxLine != null) {
-                    	taxLine.setMemoLineName("Tax memo");
+                    
+                    if(taxLine != null) {
 		        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
 		        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
-		        		taxLine.setRevenuedSchedulingRuleStrtDt(taxLine.getBillDate());
-		        		taxLine.setTransactionLineDescr("To account for GST");
-		        		taxLine.setTaxClassificationCode("");
+		        		taxLine.setTransactionLineDescr("GST");
 		        		LOG.info("Writing tax line");
+		        		taxLine.setLinkToTransactionsFlexfieldSegment2(taxLine.getLineTransactionFlexfieldSeg2());
 		        		singleton.setLineSegment(taxLine);
+		        		
+		        		taxLine.setLinkToTransactionsFlexfieldCntxt(taxLine.getLineTransactionFlexfieldContxt());
+		        		taxLine.setLinkToTransactionsFlexfieldSegment1(taxLine.getLineTransactionFlexfieldSeg1());
+
 		        		bw.write(taxLine.getTaxLine());
                     }
-                    
                 } else {
                     for (Invoice invoce : invoiceList) {
                     	LOG.info("INVOICE NUMBER: "+invoce.getInvoiceNumber()+" being written to error file");

@@ -56,7 +56,6 @@ public class CreditMemoSingleton {
     }
 
     public void addInvoiceRef(String invoiceLineRef) {
-    	//if(invoiceLineRef.startsWith(Constants.INTERFACE_LINE_CONTEXT) & invoiceLineRef.endsWith(Constants.INTERFACE_LINE_CONTEXT_END))
     	invoiceRef.add(invoiceLineRef);
     }
     
@@ -182,13 +181,12 @@ public class CreditMemoSingleton {
                     BigDecimal allocatedRevAmt = new BigDecimal(CreditMemo.getAllocatedRevAmt());
                     BigDecimal sfcFunding = (!(CreditMemo.getSfcFundedAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
                     					new BigDecimal(CreditMemo.getSfcFundedAmt()) : new BigDecimal(0)) ;
-                    //LOG.info("SFC: "+sfcFunding);
+                   
                     BigDecimal wdaFunding = (!(CreditMemo.getWdaFundAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
                             			new BigDecimal(CreditMemo.getWdaFundAmt()) : new BigDecimal(0)) ;
-                    //LOG.info("WDA: "+wdaFunding);
+                    
                     BigDecimal discount = (!(CreditMemo.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
                                     			new BigDecimal(CreditMemo.getDiscountAmt()) : new BigDecimal(0)) ;        			
-                    LOG.info("DISCOUNT: "+discount);
                     BigDecimal forfeitedAmt = (!(CreditMemo.getForfeitedAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
                 			new BigDecimal(CreditMemo.getForfeitedAmt()) : new BigDecimal(0)) ;
 		            BigDecimal couponAmt = (!(CreditMemo.getCouponAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
@@ -201,13 +199,14 @@ public class CreditMemoSingleton {
                     else {
                     	allocatedRevAmt = allocatedRevAmt.add(getDiscountAmount(CreditMemo));
 	                    headerAmtSum = allocatedRevAmt;
-	                    LOG.info("New HeaderAmtSum: "+headerAmtSum);
-	                    BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(CreditMemo)));
-	                    LOG.info("GST "+gstAmount);
+	                    
+	                    /*BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(CreditMemo)));
+	                    LOG.info("GST "+gstAmount);*/
 	                    headerAmtSum = headerAmtSum.add(getTotalFundingAmount(CreditMemo));
 	                    LOG.info("(HEADER AMOUNT SUM+Funding) w/o GST "+headerAmtSum.toString());
-	                    headerAmtSum = headerAmtSum.add(gstAmount);
-	                    LOG.info("HEADER AMOUNT + GST "+headerAmtSum.toString());
+	                    
+	                    /*headerAmtSum = headerAmtSum.add(gstAmount);
+	                    LOG.info("HEADER AMOUNT + GST "+headerAmtSum.toString());*/
 	                    
 	                    CreditMemo.setHeaderAmt(new BigDecimal(CreditMemo.getAllocatedRevAmt()));
                     }
@@ -220,13 +219,10 @@ public class CreditMemoSingleton {
                         BigDecimal allocatedRevAmt = new BigDecimal(cm.getAllocatedRevAmt());
                         BigDecimal sfcFunding = (!(cm.getSfcFundedAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
             					new BigDecimal(cm.getSfcFundedAmt()) : new BigDecimal(0)) ;
-			            //LOG.info("SFC: "+sfcFunding);
 			            BigDecimal wdaFunding = (!(cm.getWdaFundAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
 			                    			new BigDecimal(cm.getWdaFundAmt()) : new BigDecimal(0)) ;
-			            //LOG.info("WDA: "+wdaFunding);
 			            BigDecimal discount = (!(cm.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
 			                            			new BigDecimal(cm.getDiscountAmt()) : new BigDecimal(0)) ;        			
-			            LOG.info("DISCOUNT: "+discount);
 			            BigDecimal forfeitedAmt = (!(cm.getForfeitedAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
                     			new BigDecimal(cm.getForfeitedAmt()) : new BigDecimal(0)) ;
 			            BigDecimal couponAmt = (!(cm.getCouponAmt().equalsIgnoreCase(Constants.EMTPY)) ? 
@@ -238,10 +234,12 @@ public class CreditMemoSingleton {
                         	LOG.info("Funding/ Discount line");
                         } else {
                         	temp = allocatedRevAmt.add(getDiscountAmount(cm));
-    	                    BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(cm)));
-    	                    temp = temp.add(getTotalFundingAmount(cm));
+    	                    /*BigDecimal gstAmount = new BigDecimal(df.format(getGstAmount(cm)));*/
+    	                    
+                        	temp = temp.add(getTotalFundingAmount(cm));
     	                    headerAmtSum = headerAmtSum.add(temp);
-    	                    headerAmtSum = headerAmtSum.add(gstAmount);
+    	                    
+    	                    /*headerAmtSum = headerAmtSum.add(gstAmount);*/
                         }
                     }
                 }
@@ -306,7 +304,7 @@ public class CreditMemoSingleton {
     }
     
     public BigDecimal getGstAmount(CreditMemo i) {
-    	BigDecimal funding = getTotalFundingAmount(i);
+    	/*BigDecimal funding = getTotalFundingAmount(i);
     	 String gstPercent = i.getGstPercent();
     	 BigDecimal gstAmount = new BigDecimal(0);
     	 BigDecimal invoiceLineGstAmt = new BigDecimal(i.getGstAmount());
@@ -324,8 +322,8 @@ public class CreditMemoSingleton {
          		gstAmount = allocatedRevAmt.multiply(new BigDecimal(gstPercent));
              	gstAmount = gstAmount.divide(new BigDecimal(100));
          	} 
-         }
-         
+         }*/
+         BigDecimal gstAmount = new BigDecimal(i.getGstAmount());
          return gstAmount;
          	
     }

@@ -23,11 +23,13 @@ import com.compasites.constants.Constants;
 import com.compasites.helper.CreditMemoSingleton;
 import com.compasites.helper.IntegrationServiceHelper;
 import com.compasites.helper.InvoiceSingleton;
+import com.compasites.helper.ReportRunHelper;
 import com.compasites.pojo.CreditMemo;
 import com.compasites.pojo.Customer;
 import com.compasites.pojo.Invoice;
 import com.compasites.utils.DateUtil;
 import com.compasites.utils.FileUtil;
+import com.compasites.validations.CommonValidation;
 import com.oracle.xmlns.apps.financials.commonmodules.shared.model.erpintegrationservice.ServiceException;
 
 import bsh.EvalError;
@@ -42,6 +44,9 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
 
     @Autowired
     IntegrationServiceHelper integrationServiceHelper;
+    
+    @Autowired
+    private ReportRunHelper reportRunHelper;
 
     @Value("${creditmemo.inputDir}")
     private String inputDir;
@@ -167,8 +172,6 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
 
                 String moveTime = DateUtil.getDateTime();
 
-                //after completion of operation input file is moved to processed folder
-                //FileUtil.moveInputFile(inputDir + inputFile, processedDir, inputFile, moveTime);
                 FileUtil.moveInputFile(inputDir + CreditMemo.creditmemoFile, processedDir, CreditMemo.creditmemoFile, moveTime);
 
                 if (invoiceInterfaceFile.length() > 0) {
@@ -209,64 +212,112 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
         
         try{
             boolean valid = true;
-            ArrayList<CreditMemo> invoiceList = singleton.getValidList();
-            if(invoiceList == null) {
-                invoiceList = singleton.getErrorList();
+            ArrayList<CreditMemo> creditMemoList = singleton.getValidList();
+            if(creditMemoList == null) {
+                creditMemoList = singleton.getErrorList();
                 valid = false;
             }
-            if (invoiceList != null) {
+            if (creditMemoList != null) {
                 if (valid) {
-                    for (CreditMemo cm : invoiceList) {
-                    	 BigDecimal checkHeaderAmt = new BigDecimal(df.format(cm.getHeaderAmt()));
-                         BigDecimal checkGrossTotalAmt = new BigDecimal(df.format(new BigDecimal(cm.getGrossTotalAmt())));
-                         BigDecimal roundingDiff = (checkHeaderAmt.subtract(checkGrossTotalAmt)).abs();
-                         
-                        if (roundingDiff.compareTo(new BigDecimal("0.10")) == 1){
-                            cm.setErrorMsg(Constants.GROSS_TOTAL_AMOUNT_ERROR_MSG);
-                            errorFileBw.write(cm.getErrorLine());
-                        }else {
-                        	BigDecimal allocatedRev = new BigDecimal(cm.getAllocatedRevAmt());
-                        	
-                        	if(!(cm.getSfcFundedAmt().equalsIgnoreCase(Constants.EMTPY)&
-                        			cm.getWdaFundAmt().equalsIgnoreCase(Constants.EMTPY))) {
-                        		//if gross total is 0, calculate 7% tax on line amount
-                        		if(cm.getGrossTotalAmt().equals("0.00")) {
-                            		cm.setUnitSellingPrice("");
-                            		if(allocatedRev.signum() == 1)
-                            			cm.setLineAmtIncludesTaxFlag("Y");
-                            		else
-                            			cm.setLineAmtIncludesTaxFlag("N");
-                        		} else {
-                        			LOG.info("NO TAX on Funding line");
-                        			if(allocatedRev.signum() == 1) {
-                        				cm.setTaxClassificationCode("");
-                        			}
-                        			cm.setLineAmtIncludesTaxFlag("");
-                        		}
+                	CreditMemo taxLine = null;
+                	for (CreditMemo cm : creditMemoList) {
+                	BigDecimal headerAmtSum = new BigDecimal(df.format(cm.getHeaderAmt()));
+                    BigDecimal grossTotalAmt = new BigDecimal(df.format(new BigDecimal(cm.getGrossTotalAmt())));
+                    BigDecimal gst = new BigDecimal(df.format(new BigDecimal(cm.getGstAmount())));
+                    
+                    BigDecimal allocatedRev = new BigDecimal(cm.getAllocatedRevAmt());
+	                if (gst.add(headerAmtSum).compareTo(grossTotalAmt) != 0){
+	                    cm.setErrorMsg(Constants.GROSS_TOTAL_AMOUNT_ERROR_MSG);
+	                    errorFileBw.write(cm.getErrorLine());
+                    } else {
+
+                    	if(!cm.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                        	if(allocatedRev.signum() == 1)
+                        		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
                         		
-                        	} else {
-                            	// If allocated rev is +ve OR (SFC and WDA are empty)
-                            	// Deduct discount amount
-                            	if(!cm.getDiscountAmt().equalsIgnoreCase(Constants.EMTPY)) {
-                            		if(allocatedRev.signum() == 1)
-                            			allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
-                            		
-                            		BigDecimal newAmt = allocatedRev.add(new BigDecimal(cm.getDiscountAmt()));
-                            		cm.setTransactionLineAmt(newAmt.toString());
-                            		cm.setUnitSellingPrice(newAmt.toString());
-                            	}
-                            	// if GST is 0
-                            	if(cm.getGstAmount().equals("0.00"))
-                            		cm.setTaxClassificationCode("");
-                            	
-                            	cm.setLineAmtIncludesTaxFlag("");
-                        	}
-                        	bw.write(cm.getContent());
-                        	
+                        	BigDecimal newAmt = allocatedRev.add(new BigDecimal(cm.getDiscountAmt()));
+                        	cm.setTransactionLineAmt(newAmt.toString());
+                        	cm.setUnitSellingPrice(newAmt.toString());
+                        }
+                        if(!cm.getForfeitedAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                        	if(allocatedRev.signum() == 1)
+                        		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
+                        		
+                        	BigDecimal newAmt1 = allocatedRev.add(new BigDecimal(cm.getForfeitedAmt()));
+                        	cm.setTransactionLineAmt(newAmt1.toString());
+                        	cm.setUnitSellingPrice(newAmt1.toString());
+                        }
+                        if(!cm.getCouponAmt().equalsIgnoreCase(Constants.EMTPY)) {
+                        	if(allocatedRev.signum() == 1)
+                        		allocatedRev = allocatedRev.multiply(new BigDecimal(-1));
+                        		
+                        	BigDecimal newAmt2 = allocatedRev.add(new BigDecimal(cm.getCouponAmt()));
+                        	cm.setTransactionLineAmt(newAmt2.toString());
+                        	cm.setUnitSellingPrice(newAmt2.toString());
+                        }
+                        
+                        if(headerAmtSum.signum() == 1) {
+                        	if(cm.getMemoLineName().equals(Constants.SFC_MEMOLINE))
+                        		cm.setLineAmtIncludesTaxFlag("Y");
+                        	else
+                        		cm.setLineAmtIncludesTaxFlag("N");
+                        }else
+                        	cm.setLineAmtIncludesTaxFlag("");
+                       
+                        bw.write(cm.getContent());
+                        if(!cm.getMemoLineName().equals(Constants.WDA_MEMOLINE) && 
+                        		!cm.getMemoLineName().equals(Constants.SFC_MEMOLINE) &&
+                        		allocatedRev.signum() > 0)
+                        	taxLine = cm;	
                         }
                     }
-                } else {
-                    for (CreditMemo invoce : invoiceList) {
+                if(taxLine != null) {
+                	boolean isNotEmptyVoucherRef = CommonValidation.stringNotEmpty(taxLine.getVoucherRefNumber());
+        			
+        			if(isNotEmptyVoucherRef) {
+        				BigDecimal s = new BigDecimal(taxLine.getGstAmount()).multiply(new BigDecimal(-1));
+        				String refAmount = df.format(s);
+        				
+        				String invoiceTaxRef = reportRunHelper.getInvoiceTaxLineReference(taxLine.getCustomerId(),
+            				taxLine.getVoucherRefNumber(), refAmount);
+        				
+        				String[] arr = new String[3];
+         			     if (invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_CONTEXT) >= 0) {
+         			    	 arr[0] = invoiceTaxRef.substring(invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_CONTEXT) + 24, invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_CONTEXT_END));
+                         }
+                         if (invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) > 0) {
+                        	 arr[1] = invoiceTaxRef.substring(invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1) + 27, invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE1_END));
+                         }
+                         if (invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) > 0) {
+                        	 arr[2] = invoiceTaxRef.substring(invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) + 27, invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END));
+                         }
+                        if (arr[0] != null && arr[1] != null && arr[2] != null) {	
+                        	taxLine.setRefTransactionFlexfieldCntxt(arr[0]);
+                        	taxLine.setRefTransactionFlexfieldSegment1(arr[1]);
+                        	taxLine.setRefTransactionFlexfieldSegment2(arr[2]);
+        				} else {
+        					taxLine.setRefTransactionFlexfieldCntxt(Constants.EMTPY);
+        					taxLine.setRefTransactionFlexfieldSegment1(Constants.EMTPY);
+        					taxLine.setRefTransactionFlexfieldSegment2(Constants.EMTPY);
+        					taxLine.setCreditMtdUsedRevenueSchedulingRules(Constants.EMTPY);
+        				}
+        			}
+        			
+	        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
+	        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
+	        		taxLine.setTransactionLineDescr("");
+	        		LOG.info("Writing tax line");
+	        		taxLine.setLinkToTransactionsFlexfieldSegment2(taxLine.getLineTransactionFlexfieldSeg2());
+	        		singleton.setLineSegment(taxLine);
+	        		
+	        		taxLine.setLinkToTransactionsFlexfieldCntxt(taxLine.getLineTransactionFlexfieldContxt());
+	        		taxLine.setLinkToTransactionsFlexfieldSegment1(taxLine.getLineTransactionFlexfieldSeg1());
+	        		
+	        		bw.write(taxLine.getTaxLine());
+                }
+                	    
+            } else {
+                    for (CreditMemo invoce : creditMemoList) {
                         errorFileBw.write(invoce.getErrorLine());
                     }
                 }

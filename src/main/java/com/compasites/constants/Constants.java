@@ -134,10 +134,12 @@ public interface Constants {
     String INVOICE_NUMBER_ACCOUNT = "XXISCA_IF_AR_Transaction";
     String BATCH_IDENTIFIER_ACCOUNT = "XXISCA_IF_AR_Import_Batch";
     String INVOICE_LINE_REF_ACCOUNT = "XXISCA_IF_AR_Transaction_Line_Ref";
+    String INVOICE_TAX_LINE_REF_ACCOUNT = "XXISCA_IF_AR_Transaction_Tax_Line_Ref";
     String CUSTOMER_REPORT_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_Customer_Account.xdo";
     String INVOICE_REPORT_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_AR_Transaction.xdo";
     String INVOICE_REF_REPORT_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_AR_Transaction_Ref.xdo";
     String INVOICE_LINE_REF_REPORT_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_AR_Transaction_Line_Ref.xdo";
+    String INVOICE_TAX_LINE_REF_REPORT_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_AR_Transaction_Tax_Line_Ref.xdo";
     String BATCH_IDENTIFIER_ABS_PATH = "Custom/ISCA Interfaces/Reports/XXISCA_IF_AR_Import_Batch.xdo";
     String PR_CUSTOMER_NUMBER = "PR_CUSTOMER_NUMBER";
     String PR_BU_NAME = "PR_BU_NAME";
@@ -160,6 +162,7 @@ public interface Constants {
     String BATCH_ID = "<BATCH_ID>";
     String BATCH_ID_END = "</BATCH_ID>";
     String BATCH_ID_INITIAL = "FMS-CRM-";
+    String TAX_RATE_CODE = "OUTPUT-OSR_7";
 
     String IFLAG = "I";
     String AFLAG = "A";

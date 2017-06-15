@@ -147,17 +147,6 @@ public class CreditMemoBatchConfiguration {
         return new CreditMemoCustomWriter();
     }
 
-    /*@Scheduled(cron = "${cron.expression.creditmemo}")
-    public void perform() throws Exception {
-        LOG.info("CreditMemo job started ---");
-
-        JobParameters param = new JobParametersBuilder().addString("JobID",
-                String.valueOf(System.currentTimeMillis())).toJobParameters();
-        JobExecution execution = jobLauncher.run(creditMemoJob(), param);
-
-        LOG.info("CreditMemo job finished with status :" + execution.getStatus());
-    }*/
-
     @Bean
     public Job creditMemoJob() {
         return jobBuilderFactory.get("creditMemoJob")
