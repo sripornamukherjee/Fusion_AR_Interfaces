@@ -162,7 +162,9 @@ public interface Constants {
     String BATCH_ID = "<BATCH_ID>";
     String BATCH_ID_END = "</BATCH_ID>";
     String BATCH_ID_INITIAL = "FMS-CRM-";
-    String TAX_RATE_CODE = "OUTPUT-OSR_7";
+    String OUTPUT_OSR_7_TAX = "OUTPUT-OSR_7";
+    String OUTPUT_OZR_0_TAX = "OUTPUT-OZR";
+    
 
     String IFLAG = "I";
     String AFLAG = "A";

@@ -122,6 +122,13 @@ public class InvoiceCustomWriter implements ItemWriter<Invoice> {
                             if(taxLine != null) {
     			        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
     			        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
+    			        		
+    			        		if((taxLine.getInvoiceNumber().contains("MSM") || taxLine.getRecordType().contains("MSD") || taxLine.getGstPercent().contains("0")) &&
+    			        				taxLine.getGstAmount().equals("0.00")) 
+    			        			taxLine.setTaxRateCode(Constants.OUTPUT_OZR_0_TAX);
+    			        		else
+    			        			taxLine.setTaxRateCode(Constants.OUTPUT_OSR_7_TAX);
+    			        		
     			        		taxLine.setTransactionLineDescr("GST");
     			        		LOG.info("Writing tax line");
     			        		taxLine.setLinkToTransactionsFlexfieldSegment2(taxLine.getLineTransactionFlexfieldSeg2());

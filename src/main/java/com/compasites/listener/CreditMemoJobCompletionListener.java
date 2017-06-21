@@ -267,7 +267,7 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
                         bw.write(cm.getContent());
                         if(!cm.getMemoLineName().equals(Constants.WDA_MEMOLINE) && 
                         		!cm.getMemoLineName().equals(Constants.SFC_MEMOLINE) &&
-                        		allocatedRev.signum() > 0)
+                        		allocatedRev.signum() < 0)
                         	taxLine = cm;	
                         }
                     }
@@ -291,6 +291,7 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
                          if (invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) > 0) {
                         	 arr[2] = invoiceTaxRef.substring(invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2) + 27, invoiceTaxRef.indexOf(Constants.INTERFACE_LINE_ATTRIBUTE2_END));
                          }
+                         
                         if (arr[0] != null && arr[1] != null && arr[2] != null) {	
                         	taxLine.setRefTransactionFlexfieldCntxt(arr[0]);
                         	taxLine.setRefTransactionFlexfieldSegment1(arr[1]);
@@ -305,7 +306,14 @@ public class CreditMemoJobCompletionListener extends JobExecutionListenerSupport
         			
 	        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
 	        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
-	        		taxLine.setTransactionLineDescr("");
+	        		
+	        		if((taxLine.getCreditNoteNumber().contains("MSM") || taxLine.getRecordType().contains("MSD") || taxLine.getGstPercent().contains("0")) &&
+	        				taxLine.getGstAmount().equals("0.00")) 
+	        			taxLine.setTaxRateCode(Constants.OUTPUT_OZR_0_TAX);
+	        		else
+	        			taxLine.setTaxRateCode(Constants.OUTPUT_OSR_7_TAX);
+	        		
+	        		taxLine.setTransactionLineDescr("GST");
 	        		LOG.info("Writing tax line");
 	        		taxLine.setLinkToTransactionsFlexfieldSegment2(taxLine.getLineTransactionFlexfieldSeg2());
 	        		singleton.setLineSegment(taxLine);

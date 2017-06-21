@@ -94,11 +94,24 @@ public class CreditMemoProcessor implements ItemProcessor<CreditMemo, CreditMemo
                 if(creditMemo.getBshMappingValid().equalsIgnoreCase(Constants.WDA_SFC_INVALID)){
                     isWdaSfcValid = false;
                 }
+                
+                boolean isValidMemoLine = true;
+                if(isValidAmt && isNotEmptyAmt && isWdaSfcValid) {
+                		if(creditMemo.getMemoLineName() == null || !CommonValidation.stringNotEmpty(creditMemo.getMemoLineName()))
+                			isValidMemoLine = false;
+                }
+                
+                // format all amounts to 2 decimal places
+                if(isValidAmt && isNotEmptyAmt && isWdaSfcValid && isValidMemoLine) {
+                	creditMemo.setGrossTotalAmt(df.format(new BigDecimal(creditMemo.getGrossTotalAmt())));
+                	creditMemo.setGstAmount(df.format(new BigDecimal(creditMemo.getGstAmount())));
+                	creditMemo.setAllocatedRevAmt(df.format(new BigDecimal(creditMemo.getAllocatedRevAmt())));	
+                }
 
                 boolean isNotEmptyVoucherRef = true;
                 //customer should be available in fusion validation
                 if (isValidAmt && isNotEmptyAmt && isNotEmptyBillingHeaderStatus && isNotEmptyPaymentMode && isValidDate 
-                		&& isNotEmptyRevenueAccntCode && isWdaSfcValid && isValidTransactionTypeLineItem){
+                		&& isNotEmptyRevenueAccntCode && isWdaSfcValid && isValidTransactionTypeLineItem && isValidMemoLine){
                     //isCustomerAvailable = true;
                     //isCreditMemoAvailable = false;
                 	CreditMemoSingleton singleton = CreditMemoSingleton.getInstance();
@@ -214,7 +227,9 @@ public class CreditMemoProcessor implements ItemProcessor<CreditMemo, CreditMemo
                     } else if (!isValidTransactionTypeLineItem) {
                         creditMemo.setErrorMsg(Constants.TRANSACTION_TYPE_LINEITEM_EMPTY_ERROR_MSG);
                     } else if(!isWdaSfcValid){
-                        creditMemo.setErrorMsg(Constants.WDA_SFC_ERROR_MSG);
+                        creditMemo.setErrorMsg(Constants.WDA_SFC_AMOUNT_ERROR_MSG);
+                    } else if(!isValidMemoLine){
+                    	creditMemo.setErrorMsg(Constants.INVALID_MEMO_LINE);
                     } else if (!isNotEmptyVoucherRef) {
                         creditMemo.setErrorMsg(Constants.INVOICE_REF_EMPTY);
                     } else if (!isCustomerAvailable) {

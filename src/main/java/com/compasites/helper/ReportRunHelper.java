@@ -347,8 +347,8 @@ int count = 1;
           ReportService reportService = repService.getReportService();
 
           ReportRequest reportRequest = new ReportRequest();
-          reportRequest.setAttributeTemplate(Constants.INVOICE_LINE_REF_ACCOUNT);
-          reportRequest.setReportAbsolutePath(Constants.INVOICE_LINE_REF_REPORT_ABS_PATH);
+          reportRequest.setAttributeTemplate(Constants.INVOICE_TAX_LINE_REF_ACCOUNT);
+          reportRequest.setReportAbsolutePath(Constants.INVOICE_TAX_LINE_REF_REPORT_ABS_PATH);
           ParamNameValues paramNameVals = new ParamNameValues();
           ArrayOfParamNameValue arrParamNameVal = new ArrayOfParamNameValue();
           List<ParamNameValue> paramNameValList = arrParamNameVal.getItem();

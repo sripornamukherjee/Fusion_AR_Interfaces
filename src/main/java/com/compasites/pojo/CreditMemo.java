@@ -393,7 +393,7 @@ public class CreditMemo {
                 .append(lineTransactionFlexfieldSeg1).append(Constants.CVS_SEPERATOR)
                 .append(lineTransactionFlexfieldSeg2).append(Constants.CVS_SEPERATOR)
                 .append(",,,,,,,,,,,,,,")
-                .append(taxClassificationCode).append(Constants.CVS_SEPERATOR)
+                /*.append(taxClassificationCode)*/.append(Constants.CVS_SEPERATOR)
                 .append(",,,,,,,,")
                 .append(invoicingRuleName).append(Constants.CVS_SEPERATOR)
                 .append(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,").append(lineAmtIncludesTaxFlag)
@@ -463,10 +463,10 @@ public class CreditMemo {
                 .append(noOfRevenuePeriods).append(Constants.CVS_SEPERATOR)
                 .append(revenuedSchedulingRuleStrtDt).append(Constants.CVS_SEPERATOR)*/
                 .append(Constants.CVS_SEPERATOR)
-                .append(",,,,,,,,,,,,,,,,").append(Constants.TAX_RATE_CODE)
-                .append(",,,,,,,,,,,")/*.append(lineAmtIncludesTaxFlag)*/
+                .append(",,,,,,,,,,,,,,,,").append(taxRateCode)
+                .append(",,,,,,,,,,,,,")/*.append(lineAmtIncludesTaxFlag)*/
+                .append(creditMtdUsedRevenueSchedulingRules)
                 .append(",,,,,,,,,,,,,,")
-                .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
                 .append(memoLineName)
                 .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
                 .append(linkToTransactionsFlexfieldCntxt).append(Constants.CVS_SEPERATOR)

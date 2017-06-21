@@ -281,6 +281,13 @@ public class InvoiceJobCompletionListener extends JobExecutionListenerSupport {
 		        		taxLine.setTransactionLineAmt(taxLine.getGstAmount());
 		        		taxLine.setUnitSellingPrice(taxLine.getGstAmount());
 		        		taxLine.setTransactionLineDescr("GST");
+		        		
+		        		if((taxLine.getInvoiceNumber().contains("MSM") || taxLine.getRecordType().contains("MSD") || taxLine.getGstPercent().contains("0")) &&
+		        				taxLine.getGstAmount().equals("0.00")) 
+		        			taxLine.setTaxRateCode(Constants.OUTPUT_OZR_0_TAX);
+		        		else
+		        			taxLine.setTaxRateCode(Constants.OUTPUT_OSR_7_TAX);
+		        		
 		        		LOG.info("Writing tax line");
 		        		taxLine.setLinkToTransactionsFlexfieldSegment2(taxLine.getLineTransactionFlexfieldSeg2());
 		        		singleton.setLineSegment(taxLine);

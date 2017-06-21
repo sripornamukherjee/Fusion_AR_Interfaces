@@ -477,7 +477,7 @@ public class Invoice {
                 .append(noOfRevenuePeriods).append(Constants.CVS_SEPERATOR)
                 .append(revenuedSchedulingRuleStrtDt).append(Constants.CVS_SEPERATOR)*/
                 .append(Constants.CVS_SEPERATOR)
-                .append(",,,,,,,,,,,,,,,,").append(Constants.TAX_RATE_CODE)
+                .append(",,,,,,,,,,,,,,,,").append(taxRateCode)
                 .append(",,,,,,,,,,,")/*.append(lineAmtIncludesTaxFlag)*/
                 .append(",,,,,,,,,,,,,,")
                 .append(Constants.CVS_SEPERATOR).append(Constants.CVS_SEPERATOR)
